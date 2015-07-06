@@ -65,14 +65,8 @@ e_engine_result Engine::release_horse(shared_ptr<Horse> _horse, uint8_t _dice_va
 	}
 
 	/// Destination cell free ?
-	/// TODO Destroy horse on cell
 	if (auto player = _horse->get_player().lock())
 	{
-//		if (board_.is_free_cell(player->get_home_position()) == false)
-//		{
-//			return e_engine_error::CELL_NOT_FREE;
-//		}
-
 		/// If destination cell is not free, kill present horse
 		if (board_.is_free_cell(player->get_home_position()) == false)
 		{
@@ -110,7 +104,11 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 	{
 		if (dir_fwd)
 		{
-			if (board_.is_free_cell(++virtual_horse_position) == false    ///
+			/// Move horse
+			++virtual_horse_position;
+
+			/// Check next position
+			if (board_.is_free_cell(virtual_horse_position) == false    ///
 				&& horse_position != virtual_horse_position)
 			{
 				dir_fwd = false;
@@ -118,7 +116,8 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 		}
 		else
 		{
-			if (board_.is_free_cell(--virtual_horse_position) == false    ///
+			--virtual_horse_position;
+			if (board_.is_free_cell(virtual_horse_position) == false    ///
 				&& horse_position != virtual_horse_position)
 			{
 				dir_fwd = true;
