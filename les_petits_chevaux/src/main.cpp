@@ -13,7 +13,7 @@
 #include <random>
 #include <ctime>
 
-#include "engine.h"
+#include "engine/engine.h"
 
 using namespace std;
 using namespace game;
