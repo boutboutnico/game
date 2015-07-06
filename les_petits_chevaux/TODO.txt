@@ -1,0 +1,3 @@
+- Sortir un cheval en trop
+- Rebondir plus loin que le début de sa base
+- prendre un adversaire lors d'un rebond
