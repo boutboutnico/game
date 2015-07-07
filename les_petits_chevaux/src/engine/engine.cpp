@@ -20,7 +20,7 @@ using namespace std;
 /// === PUBLIC DEFINITIONS	========================================================================
 
 Engine::Engine()
-		: current_player_index_(0)
+		: current_player_index_(0), stairs_(n_stairs)
 {
 
 }
@@ -30,6 +30,7 @@ Engine::Engine()
 bool Engine::add_player(const std::string& _name, uint8_t _home_position)
 {
 	players_.push_back(make_shared<Player>(_name, _home_position));
+//	stairs_.push_back(vector<shared_ptr<Horse>>(n_stairs));
 	return true;
 }
 
@@ -65,23 +66,22 @@ e_engine_result Engine::release_horse(shared_ptr<Horse> _horse, uint8_t _dice_va
 	}
 
 	/// Destination cell free ?
-	if (auto player = _horse->get_player().lock())
+	/// If destination cell is not free, kill present horse
+	auto horse_destination = _horse->get_home_position();
+	if (board_.is_free_cell(horse_destination) == false)
 	{
-		/// If destination cell is not free, kill present horse
-		if (board_.is_free_cell(player->get_home_position()) == false)
-		{
-			auto horse_to_kill = board_.get_horse(player->get_home_position());
-			horse_to_kill->set_status(e_horse_status::AT_HOME);
-		}
-
-		/// All good, release horse
-		board_.add_horse(_horse, player->get_home_position());
-
-		/// Update horse status
-		_horse->set_status(e_horse_status::ON_BOARD);
-
-		return e_engine_result::SUCCESS;
+		/// Be carefull you can kill an other of your own horses
+		auto horse_to_kill = board_.get_horse(horse_destination);
+		horse_to_kill->set_status(e_horse_status::AT_HOME);
 	}
+
+	/// All good, release horse
+	board_.add_horse(_horse, horse_destination);
+
+	/// Update horse status
+	_horse->set_status(e_horse_status::ON_BOARD);
+
+	return e_engine_result::SUCCESS;
 
 	return e_engine_result::ERROR_UNDEFINED;
 }
@@ -95,7 +95,7 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 		return e_engine_result::HORSE_NOT_ON_BOARD;
 	}
 
-	const auto horse_position = board_.get_horse_position(_horse);
+	const auto horse_position = board_.get_position(_horse);
 	int16_t virtual_horse_position = horse_position;
 	auto virtual_dice_value = _dice_value;
 	bool dir_fwd = true;
@@ -109,6 +109,7 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 
 			/// Check next position
 			if (board_.is_free_cell(virtual_horse_position) == false    ///
+				&& virtual_horse_position == _horse->get_home_position()	///
 				&& horse_position != virtual_horse_position)
 			{
 				dir_fwd = false;
@@ -117,6 +118,7 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 		else
 		{
 			--virtual_horse_position;
+
 			if (board_.is_free_cell(virtual_horse_position) == false    ///
 				&& horse_position != virtual_horse_position)
 			{
@@ -138,6 +140,41 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 
 	board_.remove_horse(horse_position);
 	board_.add_horse(_horse, virtual_horse_position);
+
+	if (_dice_value != 6) next_player();
+	return e_engine_result::SUCCESS;
+}
+
+///	------------------------------------------------------------------------------------------------
+
+e_engine_result Engine::move_horse_on_stairs(std::shared_ptr<Horse> _horse, uint8_t _dice_value)
+{
+	if (_horse->get_status() == e_horse_status::ON_BOARD)
+	{
+		if (board_.is_in_front_of_stairs(_horse) == false) return e_engine_result::HORSE_NOT_IN_FRONT_OF_STAIRS;
+		if (_dice_value != 1) return e_engine_result::NEED_DICE_1_TO_ENTER_STAIRS;
+
+		/// Remove horse from board
+		const auto horse_position = board_.get_position(_horse);
+		board_.remove_horse(horse_position);
+
+		/// Add board on stairs, here it is first step
+		stairs_[_dice_value].push_back(_horse);
+
+	}
+	else if (_horse->get_status() == e_horse_status::ON_STAIRS)
+	{
+		/// Need dice equal to position + 1 to move onto next step
+		const auto horse_position = get_stairs_position(_horse);
+		if(horse_position == _dice_value - 1)
+		{
+
+		}
+	}
+	else
+	{
+		return e_engine_result::ERROR_UNDEFINED;
+	}
 
 	if (_dice_value != 6) next_player();
 	return e_engine_result::SUCCESS;

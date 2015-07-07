@@ -39,7 +39,7 @@ public:
 
 	inline uint16_t get_home_position() const
 	{
-		return home_position_ * 14;
+		return home_position_;
 	}
 
 	inline void add_horses(uint8_t _n_horses)
@@ -48,7 +48,8 @@ public:
 		{
 			std::stringstream ss;
 			ss << (i + 1);
-			horses_.push_back(std::make_shared<Horse>(ss.str(), shared_from_this()));
+			horses_.push_back(
+					std::make_shared<Horse>(home_position_ * 14, ss.str(), shared_from_this()));
 		}
 	}
 

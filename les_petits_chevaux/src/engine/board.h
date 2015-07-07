@@ -51,11 +51,13 @@ public:
 		return (cells_[_M_convert_index(_cell_index)] == false) ? true : false;
 	}
 
+	bool is_in_front_of_stairs(std::shared_ptr<Horse> _horse) const;
+
 	bool add_horse(std::shared_ptr<Horse> _horse, uint8_t _cell_index);
 	bool remove_horse(uint8_t _cell_index);
 
 	/// Be sure that _horse is on the board before calling this method
-	uint8_t get_horse_position(std::shared_ptr<Horse> _horse)
+	uint8_t get_position(std::shared_ptr<Horse> _horse) const
 	{
 		const auto i = std::find(cells_.begin(), cells_.end(), _horse);
 		return (i - cells_.begin());

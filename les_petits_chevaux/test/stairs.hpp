@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <iostream>
 #include "engine/engine.h"
+#include "print.hpp"
 
 /// === NAMESPACES	================================================================================
 
@@ -22,26 +23,18 @@ namespace test
 
 /// === PUBLIC DEFINITIONS	========================================================================
 
-/// 1- Don't release horse without dice equal to 6
-/// 2- Don't release horse already out
-/// Release horse on free home cell
-/// Release horse on home cell taken by own horse
-/// Release horse on home cell taken by other player horse
+void stairs_1();
 
-void release_horse_1();
-void release_horse_2();
-
-void release_horse()
+void stairs()
 {
-	release_horse_1();
-	release_horse_2();
+	stairs_1();
 
 	cout << "=====\t" << __func__ << "\t=====" << endl;
 }
 
 /// === PRIVATE DEFINITIONS	========================================================================
 
-void release_horse_2()
+void stairs_1()
 {
 	auto engine = Engine();
 	engine.add_player("1", 0);
@@ -50,22 +43,20 @@ void release_horse_2()
 	auto horse = engine.get_current_player()->get_horse(0);
 
 	assert(engine.release_horse(horse, 6) == e_engine_result::SUCCESS);
-	assert(engine.release_horse(horse, 6) == e_engine_result::HORSE_NOT_AT_STABLE);
 
-	cout << __func__ << endl;
-}
+	/// After 9 dice 6, It should be one cell before stairs entrance
+	for (auto i = 0U; i < 9; ++i)
+		assert(engine.move_horse_on_board(horse, 6) == e_engine_result::SUCCESS);
 
-///	------------------------------------------------------------------------------------------------
+	assert(engine.move_horse_on_board(horse, 1) == e_engine_result::SUCCESS);
 
-void release_horse_1()
-{
-	auto engine = Engine();
-	engine.add_player("1", 0);
-	engine.start(2);
+	print_board(engine.get_board());
+	print_stairs(engine);
 
-	auto horse = engine.get_current_player()->get_horse(0);
+	assert(engine.move_horse_on_stairs(horse, 1) == e_engine_result::SUCCESS);
 
-	assert(engine.release_horse(horse, 1) == e_engine_result::NEED_DICE_6_TO_RELEASE);
+	print_board(engine.get_board());
+	print_stairs(engine);
 
 	cout << __func__ << endl;
 

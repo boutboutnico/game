@@ -14,6 +14,8 @@ using namespace game;
 
 /// === Includes	================================================================================
 
+#include "horse.h"
+
 /// === Namespaces	================================================================================
 
 using namespace std;
@@ -24,6 +26,19 @@ Board::Board()
 		: cells_(n_cells)
 {
 
+}
+
+/// ------------------------------------------------------------------------------------------------
+
+bool Board::is_in_front_of_stairs(std::shared_ptr<Horse> _horse) const
+{
+	auto horse_position = get_position(_horse);
+	horse_position = _M_convert_index(horse_position);
+
+	auto stairs_entry_position = _horse->get_home_position() - 1;
+	stairs_entry_position = _M_convert_index(stairs_entry_position);
+
+	return (horse_position == stairs_entry_position) ? true : false;
 }
 
 /// ------------------------------------------------------------------------------------------------

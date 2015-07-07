@@ -39,8 +39,11 @@ class Horse
 public:
 	/// === Public Declarations	====================================================================
 
-	Horse(const std::string& _name, std::weak_ptr<Player> _player)
-			: e_status_(e_horse_status::AT_HOME), name_(_name), player_(_player)
+	Horse(uint8_t _home_position, const std::string& _name, std::weak_ptr<Player> _player)
+			: 	e_status_(e_horse_status::AT_HOME),
+				home_position_(_home_position),
+				name_(_name),
+				player_(_player)
 	{
 	}
 
@@ -52,6 +55,11 @@ public:
 	inline void set_status(e_horse_status _status)
 	{
 		e_status_ = _status;
+	}
+
+	inline uint8_t get_home_position() const
+	{
+		return home_position_;
 	}
 
 	inline const std::string& get_name() const
@@ -70,6 +78,7 @@ private:
 	/// === PRIVATE ATTRIBUTS	====================================================================
 
 	e_horse_status e_status_;
+	uint8_t home_position_;
 	std::string name_;
 	std::weak_ptr<Player> player_;
 };
