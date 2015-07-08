@@ -16,6 +16,7 @@
 
 #include "player.h"
 #include "board.h"
+#include "stairs.hpp"
 
 /// === Namespaces	================================================================================
 
@@ -32,6 +33,7 @@ enum class e_engine_result
 	HORSE_NOT_ON_BOARD,
 	HORSE_NOT_IN_FRONT_OF_STAIRS,
 	NEED_DICE_1_TO_ENTER_STAIRS,
+	NEED_GOOD_VALUE_TO_MOVE_ON_STAIRS,
 };
 
 /// === Class Declarations	========================================================================
@@ -53,20 +55,6 @@ public:
 	inline bool is_game_finished() const
 	{
 		return false;
-	}
-
-	/// Be sure that _horse is already on stairs
-	inline uint8_t get_stairs_position(const std::shared_ptr<Horse> _horse) const
-	{
-		for (auto i = 0U; i < n_stairs; ++i)
-		{
-			auto horses = stairs_[i];
-			const auto stair_position = std::find(horses.begin(), horses.end(), _horse);
-
-			/// We found horse
-			if(stair_position != horses.end()) return (i + 1);
-		}
-		assert(false);
 	}
 
 	/// ---	Operations	----------------------------------------------------------------------------
@@ -93,16 +81,12 @@ public:
 		return board_;
 	}
 
-	inline const std::vector<std::vector<std::shared_ptr<Horse>>>&get_stairs() const
+	inline const Stairs& get_stairs() const
 	{
 		return stairs_;
 	}
 
 private:
-	///	===	Private Constants	====================================================================
-
-	static const uint8_t n_stairs = 6;
-
 	/// === Private Declarations	================================================================
 
 	inline void next_player()
@@ -117,7 +101,7 @@ private:
 	uint8_t current_player_index_;
 
 	Board board_;
-	std::vector<std::vector<std::shared_ptr<Horse>>> stairs_;
+	Stairs stairs_;
 };
 
 /// === INLINE DEFINITIONS	========================================================================

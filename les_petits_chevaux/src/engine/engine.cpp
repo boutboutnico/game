@@ -20,7 +20,7 @@ using namespace std;
 /// === PUBLIC DEFINITIONS	========================================================================
 
 Engine::Engine()
-		: current_player_index_(0), stairs_(n_stairs)
+		: current_player_index_(0)
 {
 
 }
@@ -30,7 +30,6 @@ Engine::Engine()
 bool Engine::add_player(const std::string& _name, uint8_t _home_position)
 {
 	players_.push_back(make_shared<Player>(_name, _home_position));
-//	stairs_.push_back(vector<shared_ptr<Horse>>(n_stairs));
 	return true;
 }
 
@@ -152,24 +151,23 @@ e_engine_result Engine::move_horse_on_stairs(std::shared_ptr<Horse> _horse, uint
 	if (_horse->get_status() == e_horse_status::ON_BOARD)
 	{
 		if (board_.is_in_front_of_stairs(_horse) == false) return e_engine_result::HORSE_NOT_IN_FRONT_OF_STAIRS;
-		if (_dice_value != 1) return e_engine_result::NEED_DICE_1_TO_ENTER_STAIRS;
-
-		/// Remove horse from board
-		const auto horse_position = board_.get_position(_horse);
-		board_.remove_horse(horse_position);
 
 		/// Add board on stairs, here it is first step
-		stairs_[_dice_value].push_back(_horse);
+		/// Horse status modified here (if necessary)
+		auto result = stairs_.move_up_stairs(_horse, _dice_value);
 
+		if (result == e_engine_result::SUCCESS)
+		{
+			/// Remove horse from board
+			auto horse_position = board_.get_position(_horse);
+			board_.remove_horse(horse_position);
+		}
+
+		return result;
 	}
 	else if (_horse->get_status() == e_horse_status::ON_STAIRS)
 	{
-		/// Need dice equal to position + 1 to move onto next step
-		const auto horse_position = get_stairs_position(_horse);
-		if(horse_position == _dice_value - 1)
-		{
-
-		}
+		return stairs_.move_up_stairs(_horse, _dice_value);
 	}
 	else
 	{

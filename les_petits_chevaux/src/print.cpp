@@ -1,23 +1,24 @@
 ///
-/// \file	release_horse.hpp
+/// \file	print.cpp
 ///	\brief	
-///	\date	6 juil. 2015
+///	\date	8 juil. 2015
 /// \author	nboutin
 ///
 
 /// === INCLUDES	================================================================================
 
-#include <assert.h>
 #include <iostream>
-#include "engine/engine.h"
+#include "engine/board.h"
+#include "engine/stairs.hpp"
+#include "engine/horse.h"
+#include "engine/player.h"
 
 /// === NAMESPACES	================================================================================
 
 using namespace std;
+using namespace game;
 
-namespace game
-{
-namespace test
+namespace print
 {
 
 /// === PUBLIC DEFINITIONS	========================================================================
@@ -52,16 +53,16 @@ void print_board(const Board& _board)
 
 ///	------------------------------------------------------------------------------------------------
 
-void print_stairs(const Engine& _engine)
+void print_stairs(const Stairs& _stairs)
 {
-	const auto stairs = _engine.get_stairs();
+	const auto stairs = _stairs.get_stairs();
 
-	for (auto dice_value = 0U; dice_value < stairs.size(); ++dice_value)
+	for (auto step_position = 0U; step_position < stairs.size(); ++step_position)
 	{
-		auto horses = stairs[dice_value];
+		auto horses = stairs[step_position];
 		if (horses.empty() == false)
 		{
-			cout << static_cast<uint16_t>(dice_value) << " -> ";
+			cout << static_cast<uint16_t>(step_position + 1) << " -> ";
 
 			for (auto h : horses)
 			{
@@ -80,7 +81,6 @@ void print_stairs(const Engine& _engine)
 }
 
 /// === PRIVATE DEFINITIONS	========================================================================
-
-}
+///	------------------------------------------------------------------------------------------------
 }
 /// === END OF FILES	============================================================================

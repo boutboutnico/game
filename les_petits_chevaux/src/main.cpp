@@ -14,14 +14,14 @@
 #include <ctime>
 
 #include "engine/engine.h"
+#include "print.hpp"
 
 using namespace std;
 using namespace game;
+using namespace print;
 
 auto roll_dice() -> uint16_t;
 shared_ptr<Horse> select_horse(shared_ptr<Player> _player);
-void print_board(const Board& _board);
-void print_stairs(const Engine& _engine);
 void print_action_message(uint16_t _user_action, e_engine_result _engine_result);
 void print_engine_message(e_engine_result _engine_result);
 
@@ -113,7 +113,7 @@ int main()
 		while (engine_result != e_engine_result::SUCCESS && is_ended == false);
 
 		print_board(engine.get_board());
-		print_stairs(engine);
+		print_stairs(engine.get_stairs());
 
 	}
 	cout << "===== End of Game	=====" << endl;
@@ -200,68 +200,13 @@ void print_engine_message(e_engine_result _engine_result)
 		cout << "Need dice equal to 1" << endl;
 		break;
 
+	case e_engine_result::NEED_GOOD_VALUE_TO_MOVE_ON_STAIRS:
+		cout << "Need good dice value to move on stairs" << endl;
+		break;
+
 	default:
 		cout << __func__ << endl;
 		break;
-	}
-}
-
-///	------------------------------------------------------------------------------------------------
-
-void print_board(const Board& _board)
-{
-	auto cells = _board.get_cells();
-
-	for (auto i = 0U; i < cells.size(); ++i)
-	{
-		auto horse = cells[i];
-
-		if (i % 14 == 0) cout << endl;
-
-		if (horse == false) cout << "-- ";
-		else
-		{
-			if (auto player = horse->get_player().lock())
-			{
-				cout << player->get_name() << horse->get_name() << " ";
-			}
-			else
-			{
-				cout << "ee ";
-			}
-		}
-
-	}
-
-	cout << endl;
-}
-
-///	------------------------------------------------------------------------------------------------
-
-void print_stairs(const Engine& _engine)
-{
-	const auto stairs = _engine.get_stairs();
-
-	for (auto dice_value = 0U; dice_value < stairs.size(); ++dice_value)
-	{
-		auto horses = stairs[dice_value];
-		if (horses.empty() == false)
-		{
-			cout << static_cast<uint16_t>(dice_value) << " -> ";
-
-			for (auto h : horses)
-			{
-				if (auto player = h->get_player().lock())
-				{
-					cout << player->get_name() << h->get_name() << " ";
-				}
-				else
-				{
-					cout << "ee ";
-				}
-			}
-			cout << endl;
-		}
 	}
 }
 

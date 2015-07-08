@@ -15,6 +15,7 @@
 /// === NAMESPACES	================================================================================
 
 using namespace std;
+using namespace print;
 
 namespace game
 {
@@ -51,12 +52,20 @@ void stairs_1()
 	assert(engine.move_horse_on_board(horse, 1) == e_engine_result::SUCCESS);
 
 	print_board(engine.get_board());
-	print_stairs(engine);
+	print_stairs(engine.get_stairs());
 
 	assert(engine.move_horse_on_stairs(horse, 1) == e_engine_result::SUCCESS);
 
 	print_board(engine.get_board());
-	print_stairs(engine);
+	print_stairs(engine.get_stairs());
+
+	assert(engine.move_horse_on_stairs(horse, 1) == e_engine_result::NEED_GOOD_VALUE_TO_MOVE_ON_STAIRS);
+	print_board(engine.get_board());
+	print_stairs(engine.get_stairs());
+
+	assert(engine.move_horse_on_stairs(horse, 2) == e_engine_result::SUCCESS);
+	print_board(engine.get_board());
+	print_stairs(engine.get_stairs());
 
 	cout << __func__ << endl;
 
