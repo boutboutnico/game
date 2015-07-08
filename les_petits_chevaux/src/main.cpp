@@ -50,7 +50,7 @@ int main()
 	{
 		/// Print information
 		current_player = engine.get_current_player();
-		cout << "=====\t" << current_player->get_name() << "\t=====" << endl;
+		cout << "=====\t Player: " << current_player->get_name() << "\t=====" << endl;
 
 		/// Roll Dice
 		cout << "Roll dice: ";

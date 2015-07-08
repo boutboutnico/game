@@ -19,6 +19,8 @@ using namespace game::test;
 
 /// TODO test
 /// - Next player
+/// - Test overtake other horse or rebound
+/// - Rebound on home after a complete board turn
 
 int main()
 {

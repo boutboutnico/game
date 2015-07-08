@@ -17,7 +17,7 @@ using namespace game;
 
 using namespace std;
 
-/// === PUBLIC DEFINITIONS	========================================================================
+/// === Public Definitions	========================================================================
 
 Engine::Engine()
 		: current_player_index_(0)
@@ -178,6 +178,6 @@ e_engine_result Engine::move_horse_on_stairs(std::shared_ptr<Horse> _horse, uint
 	return e_engine_result::SUCCESS;
 }
 
-/// === PRIVATE DEFINITIONS	========================================================================
+/// === Private Definitions	========================================================================
 
 /// === END OF FILES	============================================================================
