@@ -107,8 +107,8 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 			++virtual_horse_position;
 
 			/// Check next position
-			if (board_.is_free_cell(virtual_horse_position) == false    ///
-				&& virtual_horse_position == _horse->get_home_position()	///
+			if ((board_.is_free_cell(virtual_horse_position) == false    ///
+					|| virtual_horse_position == _horse->get_home_position())    ///
 				&& horse_position != virtual_horse_position)
 			{
 				dir_fwd = false;

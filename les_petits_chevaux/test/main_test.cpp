@@ -8,6 +8,7 @@
 /// === Includes	================================================================================
 
 #include "release_horse.hpp"
+#include "move_on_board.hpp"
 #include "stairs.hpp"
 
 /// === Namespaces	================================================================================
@@ -25,7 +26,8 @@ using namespace game::test;
 int main()
 {
 	release_horse();
-	stairs();
+	move_on_board();
+//	stairs();
 }
 
 /// === END OF FILES	============================================================================
