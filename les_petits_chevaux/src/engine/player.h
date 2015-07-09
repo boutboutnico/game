@@ -30,16 +30,16 @@ class Player : public std::enable_shared_from_this<Player>
 public:
 	/// === Public Declarations	====================================================================
 
-	Player(const std::string& _name, uint16_t _home_position);
+	Player(const std::string& _name, uint16_t _home_number);
 
 	inline const std::string& get_name() const
 	{
 		return name_;
 	}
 
-	inline uint16_t get_home_position() const
+	inline uint16_t get_home_number() const
 	{
-		return home_position_;
+		return home_number_;
 	}
 
 	inline void add_horses(uint8_t _n_horses)
@@ -49,7 +49,7 @@ public:
 			std::stringstream ss;
 			ss << (i + 1);
 			horses_.push_back(
-					std::make_shared<Horse>(home_position_ * 14, ss.str(), shared_from_this()));
+					std::make_shared<Horse>(home_number_ * 14, ss.str(), shared_from_this()));
 		}
 	}
 
@@ -69,7 +69,7 @@ private:
 	/// === PRIVATE ATTRIBUTS	====================================================================
 
 	std::string name_;
-	uint16_t home_position_;
+	uint16_t home_number_;
 	std::vector<std::shared_ptr<Horse>> horses_;
 
 };

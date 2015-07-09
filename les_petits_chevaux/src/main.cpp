@@ -31,7 +31,7 @@ int main()
 
 	auto engine = Engine();
 
-	/// Add players		name	home_pos	n_horse
+	/// Add players
 	engine.add_player("1", 0);
 	engine.add_player("2", 1);
 	engine.add_player("3", 2);

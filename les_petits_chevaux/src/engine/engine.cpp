@@ -27,9 +27,9 @@ Engine::Engine()
 
 ///	------------------------------------------------------------------------------------------------
 
-bool Engine::add_player(const std::string& _name, uint8_t _home_position)
+bool Engine::add_player(const std::string& _name, uint8_t _home_number)
 {
-	players_.push_back(make_shared<Player>(_name, _home_position));
+	players_.push_back(make_shared<Player>(_name, _home_number));
 	return true;
 }
 
@@ -108,7 +108,7 @@ e_engine_result Engine::move_horse_on_board(shared_ptr<Horse> _horse, const uint
 
 			/// Check next position
 			if ((board_.is_free_cell(virtual_horse_position) == false    ///
-					|| virtual_horse_position == _horse->get_home_position())    ///
+					|| board_.is_home_position(_horse, virtual_horse_position + 1) == true)    ///
 				&& horse_position != virtual_horse_position)
 			{
 				dir_fwd = false;

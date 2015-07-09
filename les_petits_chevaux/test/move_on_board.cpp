@@ -67,29 +67,6 @@ void move_on_board_3()
 	print_board(engine.get_board());
 	print_stairs(engine.get_stairs());
 
-//	assert(engine.move_horse_on_board(horse, 5) == e_engine_result::SUCCESS);
-//
-//	/// Player 2
-//	horse = engine.get_current_player()->get_horse(0);
-//	assert(engine.release_horse(horse, 6) == e_engine_result::SUCCESS);
-//	assert(engine.move_horse_on_board(horse, 1) == e_engine_result::SUCCESS);
-//	assert(engine.get_board().get_position(horse) == 15);
-//
-//	print_board(engine.get_board());
-//	print_stairs(engine.get_stairs());
-//
-//	/// Player 1
-//	horse = engine.get_current_player()->get_horse(0);
-//	assert(engine.move_horse_on_board(horse, 4) == e_engine_result::SUCCESS);
-//	assert(engine.get_board().get_position(horse) == 15);
-//
-//	/// Player 2
-//	horse = engine.get_current_player()->get_horse(0);
-//	assert(horse->get_status() == e_horse_status::AT_HOME);
-//
-//	print_board(engine.get_board());
-//	print_stairs(engine.get_stairs());
-
 	cout << __func__ << endl;
 }
 

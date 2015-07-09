@@ -13,7 +13,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-//#include "player.h"
+#include "horse.h"
 
 /// === Namespaces	================================================================================
 
@@ -22,7 +22,7 @@ namespace game
 
 /// === Forward Declarations	====================================================================
 
-class Horse;
+//class Horse;
 
 /// === CLASS	====================================================================================
 /// \class	
@@ -49,6 +49,11 @@ public:
 	{
 		/// Shared_ptr is false when empty
 		return (cells_[_M_convert_index(_cell_index)] == false) ? true : false;
+	}
+
+	inline bool is_home_position(const std::shared_ptr<Horse> _horse, uint8_t _position) const
+	{
+		return (_horse->get_home_position() == _M_convert_index(_position)) ? true : false;
 	}
 
 	bool is_in_front_of_stairs(std::shared_ptr<Horse> _horse) const;
