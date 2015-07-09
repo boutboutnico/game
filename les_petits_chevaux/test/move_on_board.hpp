@@ -20,6 +20,7 @@ void move_on_board();
 void move_on_board_1();
 void move_on_board_2();
 void move_on_board_3();
+void move_on_board_4();
 
 }
 }
