@@ -28,13 +28,12 @@ enum class e_pawn
 /// === Class Declarations	========================================================================
 class Engine
 {
-private:
-	/// === Private Constants	================================================================
+public:
+	/// === Public Constants	====================================================================
 
 	static const uint8_t n_players = 2;
 	static const uint8_t n_cells = 3;
 
-public:
 	/// === Public Declarations	====================================================================
 
 	Engine(const std::string& _p1, const std::string& _p2);
@@ -49,6 +48,15 @@ public:
 	///	---	Operations	----------------------------------------------------------------------------
 
 	bool add_pawn(uint8_t _x, uint8_t _y);
+
+	/// For AI or cheaters...
+	inline void remove_pawn(uint8_t _x, uint8_t _y)
+	{
+		grid_[_y][_x] = e_pawn::none;
+		winner_ = n_players;
+		is_finished_ = false;
+		previous_player();
+	}
 
 	///	---	Accessors	----------------------------------------------------------------------------
 
@@ -77,12 +85,18 @@ private:
 		current_player_ %= n_players;
 	}
 
+	inline void previous_player()
+	{
+		--current_player_;
+		current_player_ %= n_players;
+	}
+
 	void check_is_finished();
 
 	/// === Private Attributs	====================================================================
 
 	std::array<std::string, n_players> players_;
-	uint8_t current_player_;
+	int8_t current_player_;
 	uint8_t winner_;
 	bool is_finished_;
 
