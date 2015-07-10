@@ -15,6 +15,11 @@
 #include "engine/engine.hpp"
 #include "print.hpp"
 
+#ifdef TEST
+#include "test/test.hpp"
+using namespace test;
+#endif
+
 ///	=== Namespaces	================================================================================
 
 using namespace std;
@@ -23,13 +28,16 @@ using namespace print;
 
 ///	===	Public Definitions	========================================================================
 
+#ifndef TEST
+
 int main()
 {
 	cout << "TIC TAC TOE" << endl;
 
 	auto engine = Engine("P1", "P2");
 	auto is_quit = false;
-	auto str_input = string { };
+	auto str_input = string
+	{};
 	auto x = 0U, y = 0U;
 	auto engine_result = false;
 
@@ -57,5 +65,14 @@ int main()
 
 	return 0;
 }
+
+#else
+
+int main()
+{
+	run_test();
+}
+
+#endif
 
 ///	===	END OF FILE	================================================================================

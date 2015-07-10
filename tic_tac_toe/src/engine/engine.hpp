@@ -41,7 +41,10 @@ public:
 
 	///	---	Status	--------------------------------------------------------------------------------
 
-	bool is_game_finished();
+	inline bool is_game_finished()
+	{
+		return is_finished_;
+	}
 
 	///	---	Operations	----------------------------------------------------------------------------
 
@@ -74,11 +77,14 @@ private:
 		current_player_ %= n_players;
 	}
 
+	void check_is_finished();
+
 	/// === Private Attributs	====================================================================
 
 	std::array<std::string, n_players> players_;
 	uint8_t current_player_;
 	uint8_t winner_;
+	bool is_finished_;
 
 	std::array<std::array<e_pawn, n_cells>, n_cells> grid_;
 };
