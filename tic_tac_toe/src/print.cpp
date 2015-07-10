@@ -35,6 +35,7 @@ void print_grid(const engine::Engine& engine)
 		}
 		cout << endl;
 	}
+	cout << "--------------------" << endl;
 }
 
 /// === Private Definitions	========================================================================

@@ -4,8 +4,8 @@
 ///	\date	10 juil. 2015
 /// \author	nboutin
 ///
-#ifndef TEST_IS_FINISHED_HPP_
-#define TEST_IS_FINISHED_HPP_
+#ifndef TEST_TEST_FINISH_HPP_
+#define TEST_TEST_FINISH_HPP_
 
 /// === Includes	================================================================================
 

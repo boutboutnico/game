@@ -5,11 +5,13 @@
 /// \author	nboutin
 ///
 
+#include "test.hpp"
+
 /// === Includes	================================================================================
 
-#include "test.hpp"
 #include <iostream>
-#include "is_finished.hpp"
+#include "test/test_finish.hpp"
+#include "test/test_ai.hpp"
 
 /// === Namespaces	================================================================================
 
@@ -25,6 +27,7 @@ void run_test()
 	cout << "=====\tTEST\t=====" << endl;
 
 	run_is_finished();
+	run_ai();
 
 	cout << "=====\tEND OF TEST\t=====" << endl;
 }

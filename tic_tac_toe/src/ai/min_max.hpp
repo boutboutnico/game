@@ -31,7 +31,7 @@ public:
 
 	Min_Max(const std::string& _ai_player);
 
-	void compute(const engine::Engine& _engine, uint8_t& _x, uint8_t& _y);
+	void compute(const engine::Engine& _engine, uint16_t _depth, uint16_t& _x, uint16_t& _y);
 
 private:
 	/// === Private Declarations	================================================================

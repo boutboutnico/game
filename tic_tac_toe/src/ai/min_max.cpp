@@ -13,6 +13,8 @@ using namespace ai;
 #include <limits>
 #include "engine/engine.hpp"
 
+#include <iostream>
+
 /// === Namespaces	================================================================================
 
 using namespace std;
@@ -25,6 +27,8 @@ Min_Max::Min_Max(const std::string& _ai_player)
 {
 
 }
+
+///	------------------------------------------------------------------------------------------------
 
 //	max_val <- -infini
 //
@@ -41,12 +45,12 @@ Min_Max::Min_Max(const std::string& _ai_player)
 //	     fin pour
 //
 //	     jouer(meilleur_coup)
-void Min_Max::compute(const Engine& _engine, uint8_t& _x, uint8_t& _y)
+
+void Min_Max::compute(const Engine& _engine, uint16_t _depth, uint16_t& _x, uint16_t& _y)
 {
 	auto engine = _engine;
-	auto max = numeric_limits<int16_t>::max();
+	auto max = numeric_limits<int16_t>::min();
 	auto val = 0L;
-	auto depth = 2U;
 
 	for (auto y = 0U; y < Engine::n_cells; ++y)
 	{
@@ -55,7 +59,7 @@ void Min_Max::compute(const Engine& _engine, uint8_t& _x, uint8_t& _y)
 			/// Play move
 			if (engine.add_pawn(x, y) == true)
 			{
-				val = min(engine, depth - 1);
+				val = min(engine, _depth - 1);
 
 				if (val > max)
 				{
@@ -97,7 +101,7 @@ void Min_Max::compute(const Engine& _engine, uint8_t& _x, uint8_t& _y)
 int16_t Min_Max::min(engine::Engine& _engine, uint8_t _depth)
 {
 	auto val = 0L;
-	auto min = numeric_limits<int16_t>::min();
+	auto min = numeric_limits<int16_t>::max();
 
 	if (_depth == 0 || _engine.is_game_finished() == true)
 	{
@@ -150,7 +154,7 @@ int16_t Min_Max::min(engine::Engine& _engine, uint8_t _depth)
 int16_t Min_Max::max(engine::Engine& _engine, uint8_t _depth)
 {
 	auto val = 0L;
-	auto max = numeric_limits<int16_t>::max();
+	auto max = numeric_limits<int16_t>::min();
 
 	if (_depth == 0 || _engine.is_game_finished() == true)
 	{
@@ -181,11 +185,22 @@ int16_t Min_Max::max(engine::Engine& _engine, uint8_t _depth)
 
 int16_t Min_Max::eval(engine::Engine& _engine)
 {
+	auto n_cell = 0ULL;
+
+	for (auto& line : _engine.get_grid())
+		for (auto cell : line)
+			if (cell != e_pawn::none) n_cell++;
+
 	auto winner = _engine.get_winner();
 
-	if (winner == ai_player_) return 1000;
-	else if (winner == "draw") return 0;
-	else return -1000;
+	auto result = 0;
+	if (winner == ai_player_) result = 1000 - n_cell;
+	else if (winner == "draw") result = 0;
+	else result = -1000 + n_cell;
+
+	static auto cpt = 0UL;
+	cout << __func__ << cpt++ << "=" << result << endl;
+	return result;
 }
 
 /// === END OF FILES	============================================================================

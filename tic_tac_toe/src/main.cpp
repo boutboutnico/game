@@ -41,7 +41,7 @@ int main()
 
 	auto is_quit = false;
 	auto str_input = string { };
-	auto x = 0U, y = 0U;
+	uint16_t x = 0U, y = 0U;
 	auto engine_result = false;
 
 	while (engine.is_game_finished() == false && is_quit == false)
@@ -59,7 +59,8 @@ int main()
 			}
 			else
 			{
-				ai.compute(engine, reinterpret_cast<uint8_t&>(x), reinterpret_cast<uint8_t&>(y));
+				ai.compute(engine, 9, x, y);
+				cout << "AI: " << x << " " << y << endl;
 			}
 
 			engine_result = engine.add_pawn(x, y);
