@@ -14,13 +14,14 @@
 #include <ctime>
 
 #include "engine/engine.h"
+#include "print.hpp"
 
 using namespace std;
 using namespace game;
+using namespace print;
 
 auto roll_dice() -> uint16_t;
 shared_ptr<Horse> select_horse(shared_ptr<Player> _player);
-void print_board(const Board& _board);
 void print_action_message(uint16_t _user_action, e_engine_result _engine_result);
 void print_engine_message(e_engine_result _engine_result);
 
@@ -30,7 +31,7 @@ int main()
 
 	auto engine = Engine();
 
-	/// Add players		name	home_pos	n_horse
+	/// Add players
 	engine.add_player("1", 0);
 	engine.add_player("2", 1);
 	engine.add_player("3", 2);
@@ -49,7 +50,7 @@ int main()
 	{
 		/// Print information
 		current_player = engine.get_current_player();
-		cout << "=====\t" << current_player->get_name() << "\t=====" << endl;
+		cout << "=====\t Player: " << current_player->get_name() << "\t=====" << endl;
 
 		/// Roll Dice
 		cout << "Roll dice: ";
@@ -87,6 +88,13 @@ int main()
 				break;
 			}
 
+			case 3:
+			{
+				auto current_horse = select_horse(current_player);
+				engine_result = engine.move_horse_on_stairs(current_horse, dice);
+				break;
+			}
+
 			case 99:
 			{
 				is_ended = true;
@@ -105,6 +113,7 @@ int main()
 		while (engine_result != e_engine_result::SUCCESS && is_ended == false);
 
 		print_board(engine.get_board());
+		print_stairs(engine.get_stairs());
 
 	}
 	cout << "===== End of Game	=====" << endl;
@@ -131,6 +140,13 @@ void print_action_message(uint16_t _user_action, e_engine_result _engine_result)
 	case 2:
 	{
 		cout << "Move horse on board -> ";
+		print_engine_message(_engine_result);
+		break;
+	}
+
+	case 3:
+	{
+		cout << "Move horse on stairs -> ";
 		print_engine_message(_engine_result);
 		break;
 	}
@@ -176,40 +192,22 @@ void print_engine_message(e_engine_result _engine_result)
 		cout << "Ok" << endl;
 		break;
 
+	case e_engine_result::HORSE_NOT_IN_FRONT_OF_STAIRS:
+		cout << "Horse not in front of stairs" << endl;
+		break;
+
+	case e_engine_result::NEED_DICE_1_TO_ENTER_STAIRS:
+		cout << "Need dice equal to 1" << endl;
+		break;
+
+	case e_engine_result::NEED_GOOD_VALUE_TO_MOVE_ON_STAIRS:
+		cout << "Need good dice value to move on stairs" << endl;
+		break;
+
 	default:
 		cout << __func__ << endl;
 		break;
 	}
-}
-
-///	------------------------------------------------------------------------------------------------
-
-void print_board(const Board& _board)
-{
-	auto cells = _board.get_cells();
-
-	for (auto i = 0U; i < cells.size(); ++i)
-	{
-		auto horse = cells[i];
-
-		if (i % 14 == 0) cout << endl;
-
-		if (horse == false) cout << "-- ";
-		else
-		{
-			if (auto player = horse->get_player().lock())
-			{
-				cout << player->get_name() << horse->get_name() << " ";
-			}
-			else
-			{
-				cout << "ee ";
-			}
-		}
-
-	}
-
-	cout << endl;
 }
 
 ///	------------------------------------------------------------------------------------------------
