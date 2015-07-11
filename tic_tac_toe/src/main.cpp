@@ -43,6 +43,11 @@ int main()
 	auto str_input = string { };
 	uint16_t x = 0U, y = 0U;
 	auto engine_result = false;
+	auto level = 0U;
+
+	cout << "Set AI level: ";
+	getline (cin, str_input);
+	stringstream(str_input) >> level;
 
 	while (engine.is_game_finished() == false && is_quit == false)
 	{
@@ -59,7 +64,7 @@ int main()
 			}
 			else
 			{
-				ai.compute(engine, 9, x, y);
+				ai.compute(engine, level, x, y);
 				cout << "AI: " << x << " " << y << endl;
 			}
 

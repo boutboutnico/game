@@ -10,12 +10,6 @@ using namespace engine;
 
 /// === Includes	================================================================================
 /// === Namespaces	================================================================================
-
-#include <iostream>
-using namespace std;
-#include "print.hpp"
-using namespace print;
-
 /// === Public Definitions	========================================================================
 
 Engine::Engine(const std::string& _p1, const std::string& _p2)
@@ -40,9 +34,6 @@ bool Engine::add_pawn(const uint8_t _x, const uint8_t _y)
 
 	/// Control end of game
 	check_is_finished();
-
-	cout << uint16_t(_x) << " " << uint16_t(_y) << endl;
-	print_grid(*this);
 
 	/// Change player
 	next_player();

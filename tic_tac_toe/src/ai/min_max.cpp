@@ -198,8 +198,8 @@ int16_t Min_Max::eval(engine::Engine& _engine)
 	else if (winner == "draw") result = 0;
 	else result = -1000 + n_cell;
 
-	static auto cpt = 0UL;
-	cout << __func__ << cpt++ << "=" << result << endl;
+//	static auto cpt = 0UL;
+//	cout << __func__ << cpt++ << "=" << result << endl;
 	return result;
 }
 
