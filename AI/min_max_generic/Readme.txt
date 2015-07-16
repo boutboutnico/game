@@ -1,0 +1,6 @@
+- All possible moves
+- Simulate move
+- Cancel move
+- End of game
+- Evaluate game
+- AI player

@@ -1,41 +1,35 @@
 ///
-/// \file	print.cpp
+/// \file	test.cpp
 ///	\brief	
-///	\date	9 juil. 2015
+///	\date	10 juil. 2015
 /// \author	nboutin
 ///
 
-#include "print.hpp"
+#include "test.hpp"
 
 /// === Includes	================================================================================
 
 #include <iostream>
-#include "engine/engine.hpp"
+#include "test/test_finish.hpp"
+#include "test/test_ai.hpp"
 
 /// === Namespaces	================================================================================
 
 using namespace std;
-using namespace engine;
 
-namespace print
+namespace test
 {
 
 /// === Public Definitions	========================================================================
 
-void print_grid(const engine::Engine& engine)
+void run_test()
 {
-	auto& grid = engine.get_grid();
+	cout << "=====\tTEST\t=====" << endl;
 
-	for (auto& line : grid)
-	{
-		for (auto& cell : line)
-		{
-			auto str = (cell == e_pawn::circle) ? "O" : (cell == e_pawn::cross) ? "X" : "-";
-			cout << str;
-		}
-		cout << endl;
-	}
-	cout << "--------------------" << endl;
+	run_is_finished();
+	run_ai();
+
+	cout << "=====\tEND OF TEST\t=====" << endl;
 }
 
 /// === Private Definitions	========================================================================
