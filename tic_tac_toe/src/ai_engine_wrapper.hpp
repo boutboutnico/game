@@ -1,50 +1,56 @@
 ///
-/// \file	min_max.h
+/// \file	ai_engine_wrapper.h
 ///	\brief	
-///	\date	10 juil. 2015
+///	\date	16 juil. 2015
 /// \author	nboutin
 ///
-#ifndef AI_MIN_MAX_HPP_
-#define AI_MIN_MAX_HPP_
+#ifndef AI_ENGINE_WRAPPER_HPP_
+#define AI_ENGINE_WRAPPER_HPP_
 
 /// === Includes	================================================================================
 
-#include <cstdint>
-//#include <string>
+#include "ai/i_engine.hpp"
 
-/// ===	Forward Declarations	====================================================================
+///	===	Forward Declarations	====================================================================
 
+namespace engine
+{
+class Engine;
+}
 
 /// === Namespaces	================================================================================
-namespace ai
+namespace tic_tac_toe
 {
-/// ===	Forward Declarations	====================================================================
 
-struct move_t;
-class IEngine;
+class move_xy : public ai::move_t
+{
+public:
+	move_xy(uint8_t _x, uint8_t _y)
+			: x_(_x), y_(_y)
+	{
+	}
+
+	uint8_t x_;
+	uint8_t y_;
+};
 
 /// === Class Declarations	========================================================================
-class Min_Max
+class AI_Engine_Wrapper : public ai::IEngine
 {
 public:
 	/// === Public Declarations	====================================================================
 
-	Min_Max();
+	AI_Engine_Wrapper(engine::Engine& _engine);
 
-	move_t compute(ai::IEngine& _iengine) const;
+	virtual std::vector<std::unique_ptr<ai::move_t>> get_moves() const;
+	virtual void execute_move(const std::shared_ptr<ai::move_t> _move) const;
+	virtual void undo_move(const std::shared_ptr<ai::move_t> _move) const;
 
 private:
 	/// === Private Declarations	================================================================
-
-	int16_t min(ai::IEngine& _iengine, uint16_t _depth) const;
-
-	int16_t max(ai::IEngine& _iengine, uint16_t _depth) const;
-
-	int16_t eval(ai::IEngine& _iengine) const;
-
 	/// === Private Attributs	====================================================================
 
-	uint16_t depth_ = 10;
+	engine::Engine& engine_;
 };
 
 ///	------------------------------------------------------------------------------------------------

@@ -15,6 +15,7 @@
 #include "engine/engine.hpp"
 #include "ai/min_max.hpp"
 #include "print.hpp"
+#include "ai_engine_wrapper.hpp"
 
 #ifdef TEST
 #include "test/test.hpp"
@@ -27,6 +28,7 @@ using namespace std;
 using namespace engine;
 using namespace ai;
 using namespace print;
+using namespace tic_tac_toe;
 
 ///	===	Public Definitions	========================================================================
 
@@ -37,7 +39,9 @@ int main()
 	cout << "TIC TAC TOE" << endl;
 
 	auto engine = Engine("P1", "AI");
-	auto ai = Min_Max { "AI" };
+	auto ai_engine = AI_Engine_Wrapper { engine };
+//	auto ai = Min_Max { "AI" };
+	auto ai = Min_Max { };
 
 	auto is_quit = false;
 	auto str_input = string { };
@@ -45,9 +49,9 @@ int main()
 	auto engine_result = false;
 	auto level = 0U;
 
-	cout << "Set AI level: ";
-	getline (cin, str_input);
-	stringstream(str_input) >> level;
+//	cout << "Set AI level: ";
+//	getline(cin, str_input);
+//	stringstream(str_input) >> level;
 
 	while (engine.is_game_finished() == false && is_quit == false)
 	{
@@ -64,7 +68,7 @@ int main()
 			}
 			else
 			{
-				ai.compute(engine, level, x, y);
+				ai.compute(ai_engine);
 				cout << "AI: " << x << " " << y << endl;
 			}
 

@@ -45,6 +45,8 @@ public:
 		return is_finished_;
 	}
 
+	bool is_valid_move(uint8_t _x, uint8_t _y) const;
+
 	///	---	Operations	----------------------------------------------------------------------------
 
 	bool add_pawn(uint8_t _x, uint8_t _y);
