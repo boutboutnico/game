@@ -16,8 +16,9 @@ namespace test
 {
 /// === Public Declarations	========================================================================
 
-void is_finished_1();
-
+void is_finished_horizontal_1();
+void is_finished_diag_LT_RB_1();	/// Left-top Right-bottom
+void is_finished_diag_LT_RB_2();
 ///	------------------------------------------------------------------------------------------------
 }
 }

@@ -126,6 +126,34 @@ void Engine::check_is_finished()
 		}
 	}
 
+	/// === Diagonal check from left-high to right-low	===========
+
+	for (y = 0; y <= height - line; ++y)
+	{
+		for (x = 0; x <= width - line; ++x)
+		{
+			auto first_cell = grid_[y][x];
+
+			if (first_cell == e_pawn::none) continue;
+
+			auto count = uint16_t { };
+
+			uint16_t xl, yl;
+			for ( xl = x + 1, yl = y + 1; yl < height; ++yl, ++xl)
+			{
+				if (first_cell == grid_[yl][xl]) count++;
+				else break;
+			}
+
+			if (count == line - 1)
+			{
+				x_win = x;
+				y_win = y;
+				goto found;
+			}
+		}
+	}
+
 	/// ===	Check if game is finished but there is no winner
 	for (auto& line : grid_)
 		for (auto cell : line)

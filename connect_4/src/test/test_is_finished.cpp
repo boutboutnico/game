@@ -25,9 +25,9 @@ namespace test
 
 /// === Public Definitions	========================================================================
 
-void is_finished_1()
+void is_finished_horizontal_1()
 {
-	auto engine = Engine{"P1", "P2"};
+	auto engine = Engine { "P1", "P2" };
 
 	engine.add_pawn(3);
 	engine.add_pawn(3);
@@ -41,6 +41,73 @@ void is_finished_1()
 	print::print_grid(engine);
 
 	engine.add_pawn(6);
+
+	assert(engine.is_game_finished() == true);
+
+	cout << __func__ << endl;
+}
+
+///	------------------------------------------------------------------------------------------------
+
+void is_finished_diag_LT_RB_1()
+{
+	auto engine = Engine { "P1", "P2" };
+
+	engine.add_pawn(0);
+	engine.add_pawn(2);
+
+	engine.add_pawn(1);
+	engine.add_pawn(0);
+
+	engine.add_pawn(3);
+	engine.add_pawn(1);
+
+	engine.add_pawn(1);
+	engine.add_pawn(0);
+
+	engine.add_pawn(0);
+	engine.add_pawn(3);
+
+	engine.add_pawn(2);
+
+	print::print_grid(engine);
+
+	assert(engine.is_game_finished() == true);
+
+	cout << __func__ << endl;
+}
+
+///	------------------------------------------------------------------------------------------------
+
+void is_finished_diag_LT_RB_2()
+{
+	auto engine = Engine { "P1", "P2" };
+
+	engine.add_pawn(0);
+	engine.add_pawn(1);
+	engine.add_pawn(2);
+	engine.add_pawn(3);
+
+	engine.add_pawn(1);
+	engine.add_pawn(2);
+	engine.add_pawn(3);
+	engine.add_pawn(0);
+
+	engine.add_pawn(2);
+	engine.add_pawn(3);
+	engine.add_pawn(0);
+	engine.add_pawn(1);
+
+	engine.add_pawn(0);
+	engine.add_pawn(2);
+
+	engine.add_pawn(1);
+	engine.add_pawn(1);
+
+	engine.add_pawn(0);
+	engine.add_pawn(0);
+
+	print::print_grid(engine);
 
 	assert(engine.is_game_finished() == true);
 
