@@ -8,14 +8,14 @@
 
 ///	=== Includes	================================================================================
 
-#include <ai/generic_min_max.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
 
+#include "min_max_generic/generic_min_max.hpp"
+#include "ai_impl/engine_gmm.hpp"
 #include "engine/engine.hpp"
 #include "print.hpp"
-#include "ai_engine_wrapper.hpp"
 
 #ifdef TEST
 #include "test/test.hpp"
@@ -25,7 +25,6 @@ using namespace test;
 ///	=== Namespaces	================================================================================
 
 using namespace std;
-using namespace engine;
 using namespace ai;
 using namespace print;
 using namespace tic_tac_toe;
@@ -39,19 +38,19 @@ int main()
 	cout << "TIC TAC TOE" << endl;
 
 	auto engine = Engine("P1", "AI");
-	auto ai_engine = AI_Engine_Wrapper { engine, "AI" };
-//	auto ai = Min_Max { "AI" };
-	auto ai = Generic_Min_Max<tic_tac_toe::move_t> { };
+	auto ai_engine = Engine_GMM { engine, "AI" };
+	auto gmm = Generic_Min_Max<tic_tac_toe::move_t> { };
 
 	auto is_quit = false;
 	auto str_input = string { };
-	uint16_t x = 0U, y = 0U;
+	auto move = move_t { };
 	auto engine_result = false;
-//	auto level = 0U;
 
-//	cout << "Set AI level: ";
-//	getline(cin, str_input);
-//	stringstream(str_input) >> level;
+	cout << "Set AI level: ";
+	getline(cin, str_input);
+	auto level = int16_t { 0 };
+	stringstream(str_input) >> level;
+	gmm.set_depth(level);
 
 	while (engine.is_game_finished() == false && is_quit == false)
 	{
@@ -64,17 +63,18 @@ int main()
 			{
 				cout << "Select cell(x y): ";
 				getline(cin, str_input);
+				auto x = uint16_t { }, y = uint16_t { };
 				stringstream(str_input) >> x >> y;
+				move =
+				{	static_cast<uint8_t>(x) , static_cast<uint8_t>(y)};
 			}
 			else
 			{
-				auto move = ai.compute(ai_engine);
+				move = gmm.compute(ai_engine);
 				cout << "AI: " << int16_t(move.x_) << " " << int16_t(move.y_) << endl;
-				x = move.x_;
-				y = move.y_;
 			}
 
-			engine_result = engine.add_pawn(x, y);
+			engine_result = engine.add_pawn(move.x_, move.y_);
 		}
 		while (engine_result == false);
 

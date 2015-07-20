@@ -5,7 +5,7 @@
 /// \author	nboutin
 ///
 
-#include "ai_engine_wrapper.hpp"
+#include "engine_gmm.hpp"
 using namespace tic_tac_toe;
 
 /// === Includes	================================================================================
@@ -16,18 +16,17 @@ using namespace tic_tac_toe;
 
 using namespace std;
 using namespace ai;
-using namespace engine;
 
 /// === Public Definitions	========================================================================
 
-AI_Engine_Wrapper::AI_Engine_Wrapper(engine::Engine& _engine, const string& _ai_player)
+Engine_GMM::Engine_GMM(Engine& _engine, const string& _ai_player)
 		: engine_(_engine), ai_player_(_ai_player)
 {
 }
 
 ///	------------------------------------------------------------------------------------------------
 
-vector<tic_tac_toe::move_t> AI_Engine_Wrapper::get_moves() const
+vector<tic_tac_toe::move_t> Engine_GMM::get_moves() const
 {
 	auto moves = vector<move_t> { };
 
@@ -46,7 +45,7 @@ vector<tic_tac_toe::move_t> AI_Engine_Wrapper::get_moves() const
 
 ///	------------------------------------------------------------------------------------------------
 
-void AI_Engine_Wrapper::execute_move(const move_t& _move) const
+void Engine_GMM::execute_move(const move_t& _move) const
 {
 //	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
 
@@ -55,7 +54,7 @@ void AI_Engine_Wrapper::execute_move(const move_t& _move) const
 
 ///	------------------------------------------------------------------------------------------------
 
-void AI_Engine_Wrapper::undo_move(const move_t& _move) const
+void Engine_GMM::undo_move(const move_t& _move) const
 {
 //	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
 
@@ -64,7 +63,7 @@ void AI_Engine_Wrapper::undo_move(const move_t& _move) const
 
 ///	------------------------------------------------------------------------------------------------
 
-int16_t AI_Engine_Wrapper::eval() const
+int16_t Engine_GMM::eval() const
 {
 	auto n_cell = 0ULL;
 
@@ -79,8 +78,6 @@ int16_t AI_Engine_Wrapper::eval() const
 	else if (winner == "draw") result = 0;
 	else result = -1000 + n_cell;
 
-	//	static auto cpt = 0UL;
-	//	cout << __func__ << cpt++ << "=" << result << endl;
 	return result;
 }
 

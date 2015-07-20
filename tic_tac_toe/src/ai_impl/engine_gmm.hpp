@@ -4,12 +4,12 @@
 ///	\date	16 juil. 2015
 /// \author	nboutin
 ///
-#ifndef AI_ENGINE_WRAPPER_HPP_
-#define AI_ENGINE_WRAPPER_HPP_
+#ifndef ENGINE_GMM_HPP_
+#define ENGINE_GMM_HPP_
 
 /// === Includes	================================================================================
 
-#include "ai/i_engine.hpp"
+#include "min_max_generic/i_engine.hpp"
 #include "engine/engine.hpp"
 
 /// === Namespaces	================================================================================
@@ -29,12 +29,12 @@ struct move_t
 };
 
 /// === Class Declarations	========================================================================
-class AI_Engine_Wrapper : public ai::IEngine<move_t>
+class Engine_GMM : public ai::IEngine<move_t>
 {
 public:
 	/// === Public Declarations	====================================================================
 
-	AI_Engine_Wrapper(engine::Engine& _engine, const std::string& _ai_player);
+	Engine_GMM(Engine& _engine, const std::string& _ai_player);
 
 	virtual std::vector<move_t> get_moves() const;
 	virtual void execute_move(const move_t& _move) const;
@@ -50,7 +50,7 @@ private:
 	/// === Private Declarations	================================================================
 	/// === Private Attributs	====================================================================
 
-	engine::Engine& engine_;
+	Engine& engine_;
 	std::string ai_player_;
 };
 

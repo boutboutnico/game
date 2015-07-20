@@ -11,7 +11,7 @@
 
 ///	===	Forward Declarations	====================================================================
 
-namespace engine
+namespace tic_tac_toe
 {
 class Engine;
 }
@@ -22,7 +22,7 @@ namespace print
 {
 /// === Public Declarations	========================================================================
 
-void print_grid(const engine::Engine& engine);
+void print_grid(const tic_tac_toe::Engine& engine);
 
 ///	------------------------------------------------------------------------------------------------
 }

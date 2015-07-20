@@ -29,6 +29,11 @@ public:
 
 	T compute(const IEngine<T>& _engine) const;
 
+	inline void set_depth(uint16_t _depth)
+	{
+		depth_ = _depth;
+	}
+
 private:
 	/// === Private Declarations	================================================================
 
