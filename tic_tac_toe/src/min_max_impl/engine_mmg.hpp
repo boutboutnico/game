@@ -9,7 +9,7 @@
 
 /// === Includes	================================================================================
 
-#include "min_max_generic/i_engine.hpp"
+#include <min_max_generic/min_max_engine.hpp>
 #include "engine/engine.hpp"
 
 /// === Namespaces	================================================================================
@@ -29,12 +29,12 @@ struct move_t
 };
 
 /// === Class Declarations	========================================================================
-class Engine_GMM : public ai::IEngine<move_t>
+class Engine_MMG : public ai::min_max::Min_Max_Engine<move_t>
 {
 public:
 	/// === Public Declarations	====================================================================
 
-	Engine_GMM(Engine& _engine, const std::string& _ai_player);
+	Engine_MMG(Engine& _engine, const std::string& _ai_player);
 
 	virtual std::vector<move_t> get_moves() const;
 	virtual void execute_move(const move_t& _move) const;

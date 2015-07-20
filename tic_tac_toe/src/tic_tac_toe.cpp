@@ -12,8 +12,8 @@
 #include <string>
 #include <sstream>
 
-#include "min_max_generic/generic_min_max.hpp"
-#include "ai_impl/engine_gmm.hpp"
+#include <min_max_generic/min_max_generic.hpp>
+#include <min_max_impl/engine_mmg.hpp>
 #include "engine/engine.hpp"
 #include "print.hpp"
 
@@ -25,7 +25,7 @@ using namespace test;
 ///	=== Namespaces	================================================================================
 
 using namespace std;
-using namespace ai;
+using namespace ai::min_max;
 using namespace print;
 using namespace tic_tac_toe;
 
@@ -38,8 +38,8 @@ int main()
 	cout << "TIC TAC TOE" << endl;
 
 	auto engine = Engine("P1", "AI");
-	auto ai_engine = Engine_GMM { engine, "AI" };
-	auto gmm = Generic_Min_Max<tic_tac_toe::move_t> { };
+	auto ai_engine = Engine_MMG { engine, "AI" };
+	auto mmg = Min_Max_Generic<tic_tac_toe::move_t> { };
 
 	auto is_quit = false;
 	auto str_input = string { };
@@ -50,7 +50,7 @@ int main()
 	getline(cin, str_input);
 	auto level = int16_t { 0 };
 	stringstream(str_input) >> level;
-	gmm.set_depth(level);
+	mmg.set_depth(level);
 
 	while (engine.is_game_finished() == false && is_quit == false)
 	{
@@ -70,7 +70,7 @@ int main()
 			}
 			else
 			{
-				move = gmm.compute(ai_engine);
+				move = mmg.compute(ai_engine);
 				cout << "AI: " << int16_t(move.x_) << " " << int16_t(move.y_) << endl;
 			}
 

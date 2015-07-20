@@ -9,25 +9,26 @@
 
 /// === Includes	================================================================================
 
+#include <min_max_generic/min_max_engine.hpp>
 #include <cstdint>
 #include <limits>
 
-#include "i_engine.hpp"
 
 /// === Namespaces	================================================================================
 
 namespace ai
 {
-
+namespace min_max
+{
 /// === Class Declarations	========================================================================
 
 template<class T>
-class Generic_Min_Max
+class Min_Max_Generic
 {
 public:
 	/// === Public Declarations	====================================================================
 
-	T compute(const IEngine<T>& _engine) const;
+	T compute(const Min_Max_Engine<T>& _engine) const;
 
 	inline void set_depth(uint16_t _depth)
 	{
@@ -37,9 +38,9 @@ public:
 private:
 	/// === Private Declarations	================================================================
 
-	int16_t min(const IEngine<T>& _engine, uint16_t _depth) const;
+	int16_t min(const Min_Max_Engine<T>& _engine, uint16_t _depth) const;
 
-	int16_t max(const IEngine<T>& _engine, uint16_t _depth) const;
+	int16_t max(const Min_Max_Engine<T>& _engine, uint16_t _depth) const;
 
 /// === Private Attributs	====================================================================
 
@@ -64,7 +65,7 @@ private:
 //
 //	     jouer(meilleur_coup)
 template<class T>
-T Generic_Min_Max<T>::compute(const IEngine<T>& _engine) const
+T Min_Max_Generic<T>::compute(const Min_Max_Engine<T>& _engine) const
 {
 	auto val = int16_t { 0 };
 	T best_move;
@@ -112,7 +113,7 @@ T Generic_Min_Max<T>::compute(const IEngine<T>& _engine) const
 //fin fonction
 
 template<class T>
-int16_t Generic_Min_Max<T>::min(const IEngine<T>& _engine, uint16_t _depth) const
+int16_t Min_Max_Generic<T>::min(const Min_Max_Engine<T>& _engine, uint16_t _depth) const
 {
 	auto val = int16_t { 0 };
 	auto min = std::numeric_limits<int16_t>::max();
@@ -160,7 +161,7 @@ int16_t Generic_Min_Max<T>::min(const IEngine<T>& _engine, uint16_t _depth) cons
 //fin fonction
 
 template<class T>
-int16_t Generic_Min_Max<T>::max(const IEngine<T>& _engine, uint16_t _depth) const
+int16_t Min_Max_Generic<T>::max(const Min_Max_Engine<T>& _engine, uint16_t _depth) const
 {
 	auto val = int16_t { 0 };
 	auto max = std::numeric_limits<int16_t>::min();
@@ -183,8 +184,8 @@ int16_t Generic_Min_Max<T>::max(const IEngine<T>& _engine, uint16_t _depth) cons
 
 	return max;
 }
-
+///	------------------------------------------------------------------------------------------------
 }
-
+}
 #endif
 /// === END OF FILE	================================================================================

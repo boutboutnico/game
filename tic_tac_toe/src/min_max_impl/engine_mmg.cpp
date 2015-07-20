@@ -5,7 +5,7 @@
 /// \author	nboutin
 ///
 
-#include "engine_gmm.hpp"
+#include <min_max_impl/engine_mmg.hpp>
 using namespace tic_tac_toe;
 
 /// === Includes	================================================================================
@@ -19,14 +19,14 @@ using namespace ai;
 
 /// === Public Definitions	========================================================================
 
-Engine_GMM::Engine_GMM(Engine& _engine, const string& _ai_player)
+Engine_MMG::Engine_MMG(Engine& _engine, const string& _ai_player)
 		: engine_(_engine), ai_player_(_ai_player)
 {
 }
 
 ///	------------------------------------------------------------------------------------------------
 
-vector<tic_tac_toe::move_t> Engine_GMM::get_moves() const
+vector<tic_tac_toe::move_t> Engine_MMG::get_moves() const
 {
 	auto moves = vector<move_t> { };
 
@@ -45,7 +45,7 @@ vector<tic_tac_toe::move_t> Engine_GMM::get_moves() const
 
 ///	------------------------------------------------------------------------------------------------
 
-void Engine_GMM::execute_move(const move_t& _move) const
+void Engine_MMG::execute_move(const move_t& _move) const
 {
 //	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
 
@@ -54,7 +54,7 @@ void Engine_GMM::execute_move(const move_t& _move) const
 
 ///	------------------------------------------------------------------------------------------------
 
-void Engine_GMM::undo_move(const move_t& _move) const
+void Engine_MMG::undo_move(const move_t& _move) const
 {
 //	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
 
@@ -63,7 +63,7 @@ void Engine_GMM::undo_move(const move_t& _move) const
 
 ///	------------------------------------------------------------------------------------------------
 
-int16_t Engine_GMM::eval() const
+int16_t Engine_MMG::eval() const
 {
 	auto n_cell = 0ULL;
 
