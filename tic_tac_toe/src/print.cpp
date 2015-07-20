@@ -30,12 +30,12 @@ void print_grid(const Engine& engine)
 	{
 		for (auto& cell : line)
 		{
-			auto str = (cell == e_pawn::circle) ? "O" : (cell == e_pawn::cross) ? "X" : "-";
+			auto str = (cell == e_pawn::circle) ? "() " : (cell == e_pawn::cross) ? ">< " : "-- ";
 			cout << str;
 		}
 		cout << endl;
 	}
-	cout << "--------------------" << endl;
+	cout << "____________________" << endl;
 }
 
 /// === Private Definitions	========================================================================
