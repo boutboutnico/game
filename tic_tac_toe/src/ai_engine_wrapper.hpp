@@ -10,47 +10,48 @@
 /// === Includes	================================================================================
 
 #include "ai/i_engine.hpp"
-
-///	===	Forward Declarations	====================================================================
-
-namespace engine
-{
-class Engine;
-}
+#include "engine/engine.hpp"
 
 /// === Namespaces	================================================================================
 namespace tic_tac_toe
 {
 
-class move_xy : public ai::move_t
+struct move_t
 {
-public:
-	move_xy(uint8_t _x, uint8_t _y)
+	move_t() = default;
+	move_t(uint8_t _x, uint8_t _y)
 			: x_(_x), y_(_y)
 	{
 	}
 
-	uint8_t x_;
-	uint8_t y_;
+	uint8_t x_ = 0;
+	uint8_t y_ = 0;
 };
 
 /// === Class Declarations	========================================================================
-class AI_Engine_Wrapper : public ai::IEngine
+class AI_Engine_Wrapper : public ai::IEngine<move_t>
 {
 public:
 	/// === Public Declarations	====================================================================
 
-	AI_Engine_Wrapper(engine::Engine& _engine);
+	AI_Engine_Wrapper(engine::Engine& _engine, const std::string& _ai_player);
 
-	virtual std::vector<std::unique_ptr<ai::move_t>> get_moves() const;
-	virtual void execute_move(const std::shared_ptr<ai::move_t> _move) const;
-	virtual void undo_move(const std::shared_ptr<ai::move_t> _move) const;
+	virtual std::vector<move_t> get_moves() const;
+	virtual void execute_move(const move_t& _move) const;
+	virtual void undo_move(const move_t& _move) const;
+	virtual int16_t eval() const;
+
+	virtual bool is_game_finished() const
+	{
+		return engine_.is_game_finished();
+	}
 
 private:
 	/// === Private Declarations	================================================================
 	/// === Private Attributs	====================================================================
 
 	engine::Engine& engine_;
+	std::string ai_player_;
 };
 
 ///	------------------------------------------------------------------------------------------------

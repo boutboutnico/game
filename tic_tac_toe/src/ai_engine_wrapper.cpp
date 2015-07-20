@@ -20,16 +20,16 @@ using namespace engine;
 
 /// === Public Definitions	========================================================================
 
-AI_Engine_Wrapper::AI_Engine_Wrapper(engine::Engine& _engine)
-		: engine_(_engine)
+AI_Engine_Wrapper::AI_Engine_Wrapper(engine::Engine& _engine, const string& _ai_player)
+		: engine_(_engine), ai_player_(_ai_player)
 {
 }
 
 ///	------------------------------------------------------------------------------------------------
 
-vector<unique_ptr<move_t>> AI_Engine_Wrapper::get_moves() const
+vector<tic_tac_toe::move_t> AI_Engine_Wrapper::get_moves() const
 {
-	auto moves = vector<unique_ptr<move_t>> { };
+	auto moves = vector<move_t> { };
 
 	for (auto y = 0U; y < Engine::n_cells; ++y)
 	{
@@ -37,7 +37,7 @@ vector<unique_ptr<move_t>> AI_Engine_Wrapper::get_moves() const
 		{
 			if (engine_.is_valid_move(x, y) == true)
 			{
-				moves.push_back(unique_ptr<move_t>(new move_xy(x, y)));
+				moves.push_back(move_t(x, y));
 			}
 		}
 	}
@@ -46,20 +46,42 @@ vector<unique_ptr<move_t>> AI_Engine_Wrapper::get_moves() const
 
 ///	------------------------------------------------------------------------------------------------
 
-void AI_Engine_Wrapper::execute_move(const std::shared_ptr<move_t> _move) const
+void AI_Engine_Wrapper::execute_move(const move_t& _move) const
 {
-	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
+//	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
 
-	engine_.add_pawn(move->x_, move->y_);
+	engine_.add_pawn(_move.x_, _move.y_);
 }
 
 ///	------------------------------------------------------------------------------------------------
 
-void AI_Engine_Wrapper::undo_move(const std::shared_ptr<move_t> _move) const
+void AI_Engine_Wrapper::undo_move(const move_t& _move) const
 {
-	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
+//	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
 
-	engine_.remove_pawn(move->x_, move->y_);
+	engine_.remove_pawn(_move.x_, _move.y_);
+}
+
+///	------------------------------------------------------------------------------------------------
+
+int16_t AI_Engine_Wrapper::eval() const
+{
+	auto n_cell = 0ULL;
+
+	for (auto& line : engine_.get_grid())
+		for (auto cell : line)
+			if (cell != e_pawn::none) n_cell++;
+
+	auto winner = engine_.get_winner();
+
+	auto result = 0;
+	if (winner == ai_player_) result = 1000 - n_cell;
+	else if (winner == "draw") result = 0;
+	else result = -1000 + n_cell;
+
+	//	static auto cpt = 0UL;
+	//	cout << __func__ << cpt++ << "=" << result << endl;
+	return result;
 }
 
 /// === Private Definitions	========================================================================

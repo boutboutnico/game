@@ -5,7 +5,8 @@
 /// \author	nboutin
 ///
 
-#include <ai/min_max.hpp>
+#if 0
+#include <ai/generic_min_max.hpp>
 using namespace ai;
 
 /// === Includes	================================================================================
@@ -54,7 +55,7 @@ ai::move_t Min_Max::compute(IEngine& _iengine) const
 
 	for (const auto& move : _iengine.get_moves())
 	{
-		_iengine.execute_move(move);
+		_iengine.execute_move(make_shared<move_t>(move.get()));
 
 		val = min(_iengine, depth_ - 1);
 
@@ -223,5 +224,5 @@ int16_t Min_Max::eval(IEngine& _iengine) const
 ////	cout << __func__ << cpt++ << "=" << result << endl;
 //	return result;
 }
-
+#endif
 /// === END OF FILES	============================================================================

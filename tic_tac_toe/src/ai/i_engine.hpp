@@ -15,26 +15,19 @@
 /// === Namespaces	================================================================================
 namespace ai
 {
-/// === Structures Declarations	====================================================================
-
-class move_t
-{
-public:
-	virtual ~move_t()
-	{
-	}
-};
-
 /// === Class Declarations	========================================================================
+template<class T>
 class IEngine
 {
 public:
 	/// === Public Declarations	====================================================================
 
-	virtual std::vector<std::unique_ptr<move_t>> get_moves() const = 0;
-	virtual void execute_move(const std::shared_ptr<move_t> _move) const = 0;
-	virtual void undo_move(const std::shared_ptr<move_t> _move) const = 0;
+	virtual std::vector<T> get_moves() const = 0;
+	virtual void execute_move(const T& _move) const = 0;
+	virtual void undo_move(const T& _move) const = 0;
 
+	virtual bool is_game_finished() const = 0;
+	virtual int16_t eval() const = 0;
 };
 
 ///	------------------------------------------------------------------------------------------------

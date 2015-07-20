@@ -8,12 +8,12 @@
 
 ///	=== Includes	================================================================================
 
+#include <ai/generic_min_max.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
 
 #include "engine/engine.hpp"
-#include "ai/min_max.hpp"
 #include "print.hpp"
 #include "ai_engine_wrapper.hpp"
 
@@ -39,15 +39,15 @@ int main()
 	cout << "TIC TAC TOE" << endl;
 
 	auto engine = Engine("P1", "AI");
-	auto ai_engine = AI_Engine_Wrapper { engine };
+	auto ai_engine = AI_Engine_Wrapper { engine, "AI" };
 //	auto ai = Min_Max { "AI" };
-	auto ai = Min_Max { };
+	auto ai = Generic_Min_Max<tic_tac_toe::move_t> { };
 
 	auto is_quit = false;
 	auto str_input = string { };
 	uint16_t x = 0U, y = 0U;
 	auto engine_result = false;
-	auto level = 0U;
+//	auto level = 0U;
 
 //	cout << "Set AI level: ";
 //	getline(cin, str_input);
@@ -68,8 +68,10 @@ int main()
 			}
 			else
 			{
-				ai.compute(ai_engine);
-				cout << "AI: " << x << " " << y << endl;
+				auto move = ai.compute(ai_engine);
+				cout << "AI: " << int16_t(move.x_) << " " << int16_t(move.y_) << endl;
+				x = move.x_;
+				y = move.y_;
 			}
 
 			engine_result = engine.add_pawn(x, y);
