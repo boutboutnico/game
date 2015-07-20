@@ -12,8 +12,9 @@
 #include <string>
 #include <sstream>
 
+#include <min_max_generic/min_max_generic.hpp>
+#include <min_max_impl/engine_mmg.hpp>
 #include "engine/engine.hpp"
-#include "ai/min_max.hpp"
 #include "print.hpp"
 
 #ifdef TEST
@@ -24,9 +25,9 @@ using namespace test;
 ///	=== Namespaces	================================================================================
 
 using namespace std;
-using namespace engine;
-using namespace ai;
+using namespace ai::min_max;
 using namespace print;
+using namespace tic_tac_toe;
 
 ///	===	Public Definitions	========================================================================
 
@@ -37,17 +38,19 @@ int main()
 	cout << "TIC TAC TOE" << endl;
 
 	auto engine = Engine("P1", "AI");
-	auto ai = Min_Max { "AI" };
+	auto ai_engine = Engine_MMG { engine, "AI" };
+	auto mmg = Min_Max_Generic<tic_tac_toe::move_t> { };
 
 	auto is_quit = false;
 	auto str_input = string { };
-	uint16_t x = 0U, y = 0U;
+	auto move = move_t { };
 	auto engine_result = false;
-	auto level = 0U;
 
 	cout << "Set AI level: ";
-	getline (cin, str_input);
+	getline(cin, str_input);
+	auto level = int16_t { 0 };
 	stringstream(str_input) >> level;
+	mmg.set_depth(level);
 
 	while (engine.is_game_finished() == false && is_quit == false)
 	{
@@ -60,15 +63,18 @@ int main()
 			{
 				cout << "Select cell(x y): ";
 				getline(cin, str_input);
+				auto x = uint16_t { }, y = uint16_t { };
 				stringstream(str_input) >> x >> y;
+				move =
+				{	static_cast<uint8_t>(x) , static_cast<uint8_t>(y)};
 			}
 			else
 			{
-				ai.compute(engine, level, x, y);
-				cout << "AI: " << x << " " << y << endl;
+				move = mmg.compute(ai_engine);
+				cout << "AI: " << int16_t(move.x_) << " " << int16_t(move.y_) << endl;
 			}
 
-			engine_result = engine.add_pawn(x, y);
+			engine_result = engine.add_pawn(move.x_, move.y_);
 		}
 		while (engine_result == false);
 

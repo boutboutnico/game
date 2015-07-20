@@ -15,14 +15,14 @@
 /// === Namespaces	================================================================================
 
 using namespace std;
-using namespace engine;
+using namespace tic_tac_toe;
 
 namespace print
 {
 
 /// === Public Definitions	========================================================================
 
-void print_grid(const engine::Engine& engine)
+void print_grid(const Engine& engine)
 {
 	auto& grid = engine.get_grid();
 

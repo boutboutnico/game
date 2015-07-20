@@ -13,7 +13,7 @@
 #include <array>
 
 /// === Namespaces	================================================================================
-namespace engine
+namespace tic_tac_toe
 {
 
 ///	===	Public Enumerations	========================================================================
@@ -44,6 +44,8 @@ public:
 	{
 		return is_finished_;
 	}
+
+	bool is_valid_move(uint8_t _x, uint8_t _y) const;
 
 	///	---	Operations	----------------------------------------------------------------------------
 

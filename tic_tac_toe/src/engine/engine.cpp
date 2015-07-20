@@ -6,7 +6,7 @@
 ///
 
 #include "engine.hpp"
-using namespace engine;
+using namespace tic_tac_toe;
 
 /// === Includes	================================================================================
 /// === Namespaces	================================================================================
@@ -21,13 +21,22 @@ Engine::Engine(const std::string& _p1, const std::string& _p2)
 
 ///	------------------------------------------------------------------------------------------------
 
-bool Engine::add_pawn(const uint8_t _x, const uint8_t _y)
+bool Engine::is_valid_move(uint8_t _x, uint8_t _y) const
 {
 	/// Check input range
 	if (_x >= n_cells || _y >= n_cells) return false;
 
 	/// Is free cell
 	if (grid_[_y][_x] != e_pawn::none) return false;
+
+	return true;
+}
+
+///	------------------------------------------------------------------------------------------------
+
+bool Engine::add_pawn(const uint8_t _x, const uint8_t _y)
+{
+	if (is_valid_move(_x, _y) == false) return false;
 
 	/// Set pawn according to current player at _x, _y position
 	grid_[_y][_x] = (players_[current_player_] == players_[0]) ? e_pawn::circle : e_pawn::cross;
