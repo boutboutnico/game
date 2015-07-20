@@ -73,7 +73,7 @@ void Engine::check_is_finished()
 
 	auto n_cell = uint16_t { };
 
-	/// Horizontal check
+	///	===	Horizontal check	==========
 	for (y = 0; y < height; ++y)
 	{
 		for (x = 0; x <= width - line; ++x)
@@ -99,7 +99,34 @@ void Engine::check_is_finished()
 		}
 	}
 
-	/// Check if game is finished but there is no winner
+	///	===	Vertical check	==========
+
+	for (x = 0; x < width; ++x)
+	{
+		for (y = 0; y <= height - line; ++y)
+		{
+			auto first_cell = grid_[y][x];
+
+			if (first_cell == e_pawn::none) continue;
+
+			auto count = uint16_t { };
+
+			for (uint16_t yl = y + 1; yl < height; ++yl)
+			{
+				if (first_cell == grid_[yl][x]) count++;
+				else break;
+			}
+
+			if (count == line - 1)
+			{
+				x_win = x;
+				y_win = y;
+				goto found;
+			}
+		}
+	}
+
+	/// ===	Check if game is finished but there is no winner
 	for (auto& line : grid_)
 		for (auto cell : line)
 			if (cell != e_pawn::none) n_cell++;
