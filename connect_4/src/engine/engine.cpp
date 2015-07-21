@@ -139,7 +139,35 @@ void Engine::check_is_finished()
 			auto count = uint16_t { };
 
 			uint16_t xl, yl;
-			for ( xl = x + 1, yl = y + 1; yl < height; ++yl, ++xl)
+			for (xl = x + 1, yl = y + 1; yl < height && xl < width; ++yl, ++xl)
+			{
+				if (first_cell == grid_[yl][xl]) count++;
+				else break;
+			}
+
+			if (count == line - 1)
+			{
+				x_win = x;
+				y_win = y;
+				goto found;
+			}
+		}
+	}
+
+	/// === Diagonal check from left-bottom to right-top	===========
+
+	for (y = height - line + 1; y < height; ++y)
+	{
+		for (x = 0; x <= width - line; ++x)
+		{
+			auto first_cell = grid_[y][x];
+
+			if (first_cell == e_pawn::none) continue;
+
+			auto count = uint16_t { };
+
+			int16_t xl, yl;
+			for (xl = x + 1, yl = y - 1; yl >= 0 && xl < width; --yl, ++xl)
 			{
 				if (first_cell == grid_[yl][xl]) count++;
 				else break;

@@ -24,6 +24,8 @@ void test_launch()
 	is_finished_horizontal_1();
 	is_finished_diag_LT_RB_1();
 	is_finished_diag_LT_RB_2();
+	is_finished_diag_LB_RT_1();
+	is_finished_diag_LB_RT_2();
 }
 
 /// === Private Definitions	========================================================================
