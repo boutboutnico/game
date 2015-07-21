@@ -28,6 +28,10 @@ using namespace ai::min_max;
 
 /// === Public Definitions	========================================================================
 
+/// TODO
+///	- use time limit for ai
+/// - randomize move if several are equals
+
 int main()
 {
 #ifndef TEST
@@ -63,6 +67,7 @@ int main()
 				cout << "Select column: ";
 				getline(cin, str_input);
 				stringstream(str_input) >> x;
+				--x;
 			}
 			else
 			{
