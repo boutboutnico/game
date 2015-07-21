@@ -1,44 +1,35 @@
 ///
-/// \file	print.cpp
+/// \file	test_launcher.cpp
 ///	\brief	
-///	\date	9 juil. 2015
+///	\date	20 juil. 2015
 /// \author	nboutin
 ///
 
-#include "print.hpp"
+#include <test/test_launcher.hpp>
 
 /// === Includes	================================================================================
 
-#include <iostream>
-#include "engine/engine.hpp"
+#include "test_is_finished.hpp"
 
 /// === Namespaces	================================================================================
 
-using namespace std;
-using namespace tic_tac_toe;
-
-namespace print
+namespace connect_4
 {
-
+namespace test
+{
 /// === Public Definitions	========================================================================
 
-void print_grid(const Engine& engine)
+void test_launch()
 {
-	auto& grid = engine.get_grid();
-
-	for (auto& line : grid)
-	{
-		for (auto& cell : line)
-		{
-			auto str = (cell == e_pawn::circle) ? "() " : (cell == e_pawn::cross) ? ">< " : "-- ";
-			cout << str;
-		}
-		cout << endl;
-	}
-	cout << "____________________" << endl;
+	is_finished_horizontal_1();
+	is_finished_diag_LT_RB_1();
+	is_finished_diag_LT_RB_2();
+	is_finished_diag_LB_RT_1();
+	is_finished_diag_LB_RT_2();
 }
 
 /// === Private Definitions	========================================================================
 ///	------------------------------------------------------------------------------------------------
+}
 }
 /// === END OF FILES	============================================================================

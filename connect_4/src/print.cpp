@@ -15,22 +15,22 @@
 /// === Namespaces	================================================================================
 
 using namespace std;
-using namespace tic_tac_toe;
+using namespace connect_4;
 
 namespace print
 {
-
 /// === Public Definitions	========================================================================
 
 void print_grid(const Engine& engine)
 {
 	auto& grid = engine.get_grid();
 
-	for (auto& line : grid)
+	for (uint8_t x = 0; x < grid.size(); ++x)
 	{
-		for (auto& cell : line)
+		for (uint8_t y = 0; y < grid[x].size(); ++y)
 		{
-			auto str = (cell == e_pawn::circle) ? "() " : (cell == e_pawn::cross) ? ">< " : "-- ";
+			auto str = (grid[x][y] == e_pawn::yellow) ? ">< " :
+						(grid[x][y] == e_pawn::red) ? "() " : "-- ";
 			cout << str;
 		}
 		cout << endl;

@@ -54,6 +54,8 @@ int main()
 
 	while (engine.is_game_finished() == false && is_quit == false)
 	{
+		print_grid(engine);
+
 		auto current_player = engine.get_current_player();
 		cout << "=====\t" << current_player << "\t=====" << endl;
 
@@ -77,9 +79,9 @@ int main()
 			engine_result = engine.add_pawn(move.x_, move.y_);
 		}
 		while (engine_result == false);
-
-		print_grid(engine);
 	}
+
+	print_grid(engine);
 
 	/// Display end of game
 	cout << "Winner is " << engine.get_winner() << endl;
