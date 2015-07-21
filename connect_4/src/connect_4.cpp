@@ -54,39 +54,46 @@ int main()
 	stringstream(str_input) >> level;
 	mmg.set_depth(level);
 
-	while (engine.is_game_finished() == false && is_quit == false)
+	while (is_quit == false)
 	{
+		while (engine.is_game_finished() == false)
+		{
+			print_grid(engine);
+
+			auto current_player = engine.get_current_player();
+			cout << "=====\t" << current_player << "\t=====" << endl;
+
+			do
+			{
+				if (current_player == "P1" || current_player == "P2")
+				{
+					cout << "Select column: ";
+					getline(cin, str_input);
+					stringstream(str_input) >> x;
+					--x;
+				}
+				else
+				{
+					x = mmg.compute(ai_engine);
+					cout << "AI: " << x << endl;
+				}
+
+				engine_result = engine.add_pawn(x);
+			}
+			while (engine_result == false);
+		}
+
 		print_grid(engine);
 
-		auto current_player = engine.get_current_player();
-		cout << "=====\t" << current_player << "\t=====" << endl;
+		/// Display end of game
+		cout << "Winner is " << engine.get_winner() << endl;
 
-		do
-		{
-			if (current_player == "P1" || current_player == "P2")
-			{
-				cout << "Select column: ";
-				getline(cin, str_input);
-				stringstream(str_input) >> x;
-				--x;
-			}
-			else
-			{
-				x = mmg.compute(ai_engine);
-				cout << "AI: " << x << endl;
-			}
+		cout << "===== End of Game =====" << endl << endl;
 
-			engine_result = engine.add_pawn(x);
-		}
-		while (engine_result == false);
+		cout << "Play again (y/n): ";
+		getline(cin, str_input);
+		if (str_input == "n") is_quit = true;
 	}
-
-	print_grid(engine);
-
-	/// Display end of game
-	cout << "Winner is " << engine.get_winner() << endl;
-
-	cout << "===== End of Game =====" << endl;
 
 	return 0;
 #else
