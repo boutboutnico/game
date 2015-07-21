@@ -31,6 +31,7 @@ using namespace ai::min_max;
 /// TODO
 ///	- use time limit for ai
 /// - randomize move if several are equals
+/// - minmax alpha-beta pruning
 
 int main()
 {

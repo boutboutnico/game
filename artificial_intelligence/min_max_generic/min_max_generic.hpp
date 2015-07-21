@@ -9,10 +9,12 @@
 
 /// === Includes	================================================================================
 
-#include <min_max_generic/min_max_engine.hpp>
 #include <cstdint>
 #include <limits>
+#include <cstdlib>
+#include <ctime>
 
+#include <min_max_generic/min_max_engine.hpp>
 
 /// === Namespaces	================================================================================
 
@@ -27,6 +29,11 @@ class Min_Max_Generic
 {
 public:
 	/// === Public Declarations	====================================================================
+
+	Min_Max_Generic()
+	{
+		std::srand(std::time(0));
+	}
 
 	T compute(const Min_Max_Engine<T>& _engine) const;
 
@@ -77,7 +84,7 @@ T Min_Max_Generic<T>::compute(const Min_Max_Engine<T>& _engine) const
 
 		val = min(_engine, depth_ - 1);
 
-		if (val > max)
+		if (val > max || ((val == max) && (rand() % 2 == 0)))
 		{
 			max = val;
 			best_move = move;
