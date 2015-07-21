@@ -25,6 +25,10 @@ void print_grid(const Engine& engine)
 {
 	auto& grid = engine.get_grid();
 
+	for (uint8_t x = 0; x <= grid.size(); ++x)
+		cout << " " << uint16_t(x + 1) << " ";
+	cout << endl;
+
 	for (uint8_t x = 0; x < grid.size(); ++x)
 	{
 		for (uint8_t y = 0; y < grid[x].size(); ++y)
