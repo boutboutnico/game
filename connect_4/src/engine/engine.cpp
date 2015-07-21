@@ -61,6 +61,21 @@ bool Engine::add_pawn(const uint8_t _x)
 	return true;
 }
 
+///	------------------------------------------------------------------------------------------------
+
+void Engine::remove_pawn(uint8_t _x)
+{
+	auto y = uint8_t { };
+
+	while (grid_[y][_x] == e_pawn::none)
+		++y;
+
+	grid_[y][_x] = e_pawn::none;
+	winner_ = n_players;
+	is_finished_ = false;
+	previous_player();
+}
+
 /// === Private Definitions	========================================================================
 
 void Engine::check_is_finished()

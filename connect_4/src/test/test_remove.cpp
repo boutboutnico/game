@@ -1,18 +1,22 @@
 ///
-/// \file	test_launcher.cpp
+/// \file	test_is_finished.cpp
 ///	\brief	
 ///	\date	20 juil. 2015
 /// \author	nboutin
 ///
 
-#include <test/test_launcher.hpp>
+#include <test/test_remove.hpp>
 
 /// === Includes	================================================================================
 
-#include "test_is_finished.hpp"
-#include "test_remove.hpp"
+#include <iostream>
+#include <assert.h>
+#include "engine/engine.hpp"
+#include "print.hpp"
 
 /// === Namespaces	================================================================================
+
+using namespace std;
 
 namespace connect_4
 {
@@ -21,19 +25,22 @@ namespace test
 
 /// === Public Definitions	========================================================================
 
-void test_launch()
+void remomve_pawn_1()
 {
-	is_finished_horizontal_1();
-	is_finished_diag_LT_RB_1();
-	is_finished_diag_LT_RB_2();
-	is_finished_diag_LB_RT_1();
-	is_finished_diag_LB_RT_2();
+	auto engine = Engine { "P1", "P2" };
 
-	remomve_pawn_1();
+	engine.add_pawn(3);
+
+	print::print_grid(engine);
+
+	engine.remove_pawn(3);
+
+	print::print_grid(engine);
 }
 
 /// === Private Definitions	========================================================================
-///	------------------------------------------------------------------------------------------------
+
+/// ------------------------------------------------------------------------------------------------
 }
 }
 /// === END OF FILES	============================================================================

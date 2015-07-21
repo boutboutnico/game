@@ -53,13 +53,7 @@ public:
 	bool add_pawn(uint8_t _x);
 
 	/// For AI or cheaters...
-	inline void remove_pawn(uint8_t _x, uint8_t _y)
-	{
-//		grid_[_y][_x] = e_pawn::none;
-//		winner_ = n_players;
-//		is_finished_ = false;
-//		previous_player();
-	}
+	void remove_pawn(uint8_t _x);
 
 	///	---	Accessors	----------------------------------------------------------------------------
 
