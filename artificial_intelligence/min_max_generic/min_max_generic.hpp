@@ -84,7 +84,7 @@ T Min_Max_Generic<T>::compute(const Min_Max_Engine<T>& _engine) const
 
 		val = min(_engine, depth_ - 1);
 
-		if (val > max || ((val == max) && (rand() % 2 == 0)))
+		if (val > max)    ///|| ((val == max) && (rand() % 2 == 0)))
 		{
 			max = val;
 			best_move = move;
