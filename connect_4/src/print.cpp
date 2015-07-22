@@ -33,13 +33,13 @@ void print_grid(const Engine& engine)
 	{
 		for (uint8_t y = 0; y < grid[x].size(); ++y)
 		{
-			auto str = (grid[x][y] == e_pawn::yellow) ? ">< " :
-						(grid[x][y] == e_pawn::red) ? "() " : "-- ";
+			auto str = (grid[x][y] == e_pawn::cross) ? ">< " :
+						(grid[x][y] == e_pawn::circle) ? "() " : "-- ";
 			cout << str;
 		}
 		cout << endl;
 	}
-	cout << "____________________" << endl;
+	cout << "____________________" << endl << endl;
 }
 
 /// === Private Definitions	========================================================================

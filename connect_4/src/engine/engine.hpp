@@ -20,8 +20,8 @@ namespace connect_4
 enum class e_pawn
 {
 	none,
-	yellow,
-	red,
+	cross,
+	circle,
 };
 
 /// === Class Declarations	========================================================================

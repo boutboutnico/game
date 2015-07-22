@@ -75,7 +75,7 @@ template<class T>
 T Min_Max_Generic<T>::compute(const Min_Max_Engine<T>& _engine) const
 {
 	auto val = int16_t { 0 };
-	T best_move;
+	auto best_move = T{};
 	auto max = std::numeric_limits<int16_t>::min();
 
 	for (const auto& move : _engine.get_moves())
