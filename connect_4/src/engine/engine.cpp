@@ -8,15 +8,17 @@
 #include "engine.hpp"
 using namespace connect_4;
 
-#include <iostream>
-using namespace std;
-
 /// === Includes	================================================================================
 /// === Namespaces	================================================================================
+
+/// ===	Static Definitions	========================================================================
+
+const Player Engine::no_winner_ = { "Draw", e_pawn::none };
+
 /// === Public Definitions	========================================================================
 
-Engine::Engine(const std::string& _p1, const std::string& _p2)
-		: players_ { _p1, _p2 }, current_player_(0), winner_(n_players), is_finished_(false)
+Engine::Engine(Player& _p1, Player& _p2)
+		: players_ { &_p1, &_p2 }, current_player_id_(0), winner_(&no_winner_), is_finished_(false)
 {
 	for (auto& line : grid_)
 		line.fill(e_pawn::none);
@@ -50,7 +52,8 @@ bool Engine::add_pawn(const uint8_t _x)
 	}
 
 	/// Set pawn in free cell and column _x
-	grid_[y - 1][_x] = (players_[current_player_] == players_[0]) ? e_pawn::cross : e_pawn::circle;
+//	grid_[y - 1][_x] = (players_[current_player_id_] == players_[0]) ? e_pawn::cross : e_pawn::circle;
+	grid_[y - 1][_x] = players_[current_player_id_]->get_pawn();
 
 	/// Control end of game
 	check_is_finished();
@@ -71,7 +74,7 @@ void Engine::remove_pawn(uint8_t _x)
 		++y;
 
 	grid_[y][_x] = e_pawn::none;
-	winner_ = n_players;
+	winner_ = &no_winner_;
 	is_finished_ = false;
 	previous_player();
 }
@@ -214,10 +217,12 @@ void Engine::check_is_finished()
 	/// Label : Line found
 	found:
 	{
-		winner_ = (grid_[y_win][x_win] == e_pawn::cross) ? 0 : 1;
+		for (const auto& p : players_)
+		{
+			if (grid_[y_win][x_win] == p->get_pawn()) winner_ = p;
+		}
 		is_finished_ = true;
 	}
 }
 /// === Private Definitions	========================================================================
-
 /// === END OF FILES	============================================================================

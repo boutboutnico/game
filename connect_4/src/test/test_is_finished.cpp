@@ -27,7 +27,9 @@ namespace test
 
 void is_finished_horizontal_1()
 {
-	auto engine = Engine { "P1", "P2" };
+	auto player_1 = Player {"P1", e_pawn::cross};
+	auto player_2 = Player {"P2", e_pawn::circle};
+	auto engine = Engine { player_1, player_2 };
 
 	engine.add_pawn(3);
 	engine.add_pawn(3);
@@ -51,7 +53,9 @@ void is_finished_horizontal_1()
 
 void is_finished_diag_LT_RB_1()
 {
-	auto engine = Engine { "P1", "P2" };
+	auto player_1 = Player {"P1", e_pawn::cross};
+	auto player_2 = Player {"P2", e_pawn::circle};
+	auto engine = Engine { player_1, player_2 };
 
 	engine.add_pawn(0);
 	engine.add_pawn(2);
@@ -81,7 +85,9 @@ void is_finished_diag_LT_RB_1()
 
 void is_finished_diag_LT_RB_2()
 {
-	auto engine = Engine { "P1", "P2" };
+	auto player_1 = Player {"P1", e_pawn::cross};
+	auto player_2 = Player {"P2", e_pawn::circle};
+	auto engine = Engine { player_1, player_2 };
 
 	engine.add_pawn(0);
 	engine.add_pawn(1);
@@ -118,7 +124,9 @@ void is_finished_diag_LT_RB_2()
 
 void is_finished_diag_LB_RT_1()
 {
-	auto engine = Engine { "P1", "P2" };
+	auto player_1 = Player {"P1", e_pawn::cross};
+	auto player_2 = Player {"P2", e_pawn::circle};
+	auto engine = Engine { player_1, player_2 };
 
 	engine.add_pawn(0);
 	engine.add_pawn(1);
@@ -146,7 +154,9 @@ void is_finished_diag_LB_RT_1()
 
 void is_finished_diag_LB_RT_2()
 {
-	auto engine = Engine { "P1", "P2" };
+	auto player_1 = Player {"P1", e_pawn::cross};
+	auto player_2 = Player {"P2", e_pawn::circle};
+	auto engine = Engine { player_1, player_2 };
 
 	engine.add_pawn(3);
 	engine.add_pawn(4);

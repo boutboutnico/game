@@ -33,9 +33,9 @@ void print_grid(const Engine& engine)
 	{
 		for (uint8_t y = 0; y < grid[x].size(); ++y)
 		{
-			auto str = (grid[x][y] == e_pawn::cross) ? ">< " :
-						(grid[x][y] == e_pawn::circle) ? "() " : "-- ";
-			cout << str;
+//			auto str = (grid[x][y] == e_pawn::cross) ? ">< " :
+//						(grid[x][y] == e_pawn::circle) ? "() " : "-- ";
+			cout << grid[x][y] << " ";
 		}
 		cout << endl;
 	}
