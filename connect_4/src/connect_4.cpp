@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <chrono>
+
 #include "engine/engine.hpp"
 #include "print.hpp"
 #include "min_max_generic/min_max_generic.hpp"
@@ -38,30 +40,34 @@ int main()
 #ifndef TEST
 	cout << "Connect 4" << endl;
 
-	auto engine = Engine("P1", "AI");
-
-	auto mmg = Min_Max_Generic<uint8_t> { };
-	auto ai_engine = Engine_MMG { engine, "AI" };
-
 	auto is_quit = false;
-	auto str_input = string { };
-	auto x = uint16_t { };
-	auto engine_result = false;
-
-	cout << "Set AI level: ";
-	getline(cin, str_input);
-	auto level = int16_t { 0 };
-	stringstream(str_input) >> level;
-	mmg.set_depth(level);
 
 	while (is_quit == false)
 	{
+		auto mmg = Min_Max_Generic<uint8_t> { };
+		auto str_input = string { };
+		auto x = uint16_t { };
+		auto engine_result = false;
+
+		cout << "Set AI level: ";
+		getline(cin, str_input);
+		auto level = int16_t { 0 };
+		stringstream(str_input) >> level;
+		mmg.set_depth(level);
+
+		auto engine = Engine { "P1", "AI" };
+		auto ai_engine = Engine_MMG { engine, "AI" };
+		auto n_turn = uint16_t { };
+
+		auto player_sequence = vector<uint8_t> { };
+		auto ai_sequence = vector<uint8_t> { };
+
 		while (engine.is_game_finished() == false)
 		{
 			print_grid(engine);
 
 			auto current_player = engine.get_current_player();
-			cout << "=====\t" << current_player << "\t=====" << endl;
+			cout << "=====\t" << current_player << " T:" << ++n_turn << "\t=====" << endl;
 
 			do
 			{
@@ -71,11 +77,20 @@ int main()
 					getline(cin, str_input);
 					stringstream(str_input) >> x;
 					--x;
+
+					if (current_player == "P1") player_sequence.push_back(x + 1);
 				}
 				else
 				{
+					auto t1 = std::chrono::high_resolution_clock::now();
 					x = mmg.compute(ai_engine);
-					cout << "AI: " << x << endl;
+					auto t2 = std::chrono::high_resolution_clock::now();
+					auto duration =
+							std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+
+					ai_sequence.push_back(x + 1);
+
+					cout << "AI: " << x + 1 << " (" << duration << " ms)" << endl;
 				}
 
 				engine_result = engine.add_pawn(x);
@@ -86,9 +101,23 @@ int main()
 		print_grid(engine);
 
 		/// Display end of game
-		cout << "Winner is " << engine.get_winner() << endl;
+		cout << "Winner is " << engine.get_winner() << " (AI level: " << level << ")" << endl;
 
 		cout << "===== End of Game =====" << endl << endl;
+
+		cout << "History" << endl;
+
+		cout << "n turn: " << n_turn << endl;
+
+		cout << "player:\t";
+		for (auto i : player_sequence)
+			cout << " " << uint16_t(i);
+		cout << endl;
+
+		cout << "ai    :\t";
+		for (auto i : ai_sequence)
+			cout << " " << uint16_t(i);
+		cout << endl;
 
 		cout << "Play again (y/n): ";
 		getline(cin, str_input);

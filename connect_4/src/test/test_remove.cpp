@@ -36,6 +36,8 @@ void remomve_pawn_1()
 	engine.remove_pawn(3);
 
 	print::print_grid(engine);
+
+	cout << __func__ << endl;
 }
 
 /// === Private Definitions	========================================================================

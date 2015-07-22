@@ -59,6 +59,7 @@ void Engine_MMG::undo_move(const uint8_t& _move) const
 
 int16_t Engine_MMG::eval() const
 {
+	static const int16_t high_score = Engine::width * Engine::height * 8 * 10;
 	auto n_cell = uint16_t { };
 
 	/// Count active pawn
@@ -69,13 +70,98 @@ int16_t Engine_MMG::eval() const
 	auto winner = engine_.get_winner();
 	auto result = int16_t { };
 
-	if (winner == ai_player_) result = 1000 - n_cell;
-	else if (winner == "draw") result = 0;
-	else result = -1000 + n_cell;
+	if (winner == ai_player_)
+	{
+		result = high_score - n_cell;
+	}
+	else if (winner == "draw")
+	{
+		result = eval_draw();
+	}
+	else
+	{
+		result = -high_score + n_cell;
+	}
 
 	return result;
 }
 
 /// === Private Definitions	========================================================================
+
+/// Cross = adver
+/// Circle = AI
+
+struct point_t
+{
+	int8_t x, y;
+};
+
+int16_t Engine_MMG::eval_draw() const
+{
+	static const array<point_t, 8> points = { point_t { -1, -1 }, point_t { 0, -1 },
+												point_t { 1, -1 }, point_t { 1, 0 },
+												point_t { 1, 1 }, point_t { 0, 1 },
+												point_t { -1, 1 }, point_t { -1, 0 } };
+
+	const auto& grid = engine_.get_grid();
+	auto own_pts = int16_t { }, adver_pts = int16_t { };
+
+	for (auto y = uint16_t { }; y < grid.size(); ++y)
+	{
+		for (auto x = uint16_t { }; x < grid[y].size(); ++x)
+		{
+			if (grid[y][x] == e_pawn::circle)
+			{
+				for (const auto& p : points)
+				{
+					/// Is in bound
+					if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0
+						|| x + p.x >= Engine::width)
+					{
+						own_pts -= 5;
+					}
+					else if (grid[y + p.y][x + p.x] == e_pawn::circle)
+					{
+						own_pts += 10;
+					}
+					else if (grid[y + p.y][x + p.x] == e_pawn::none)
+					{
+						own_pts += 5;
+					}
+					else if (grid[y + p.y][x + p.x] == e_pawn::cross)
+					{
+						own_pts -= 10;
+					}
+				}
+			}
+			else if (grid[y][x] == e_pawn::cross)
+			{
+				for (const auto& p : points)
+				{
+					/// Is in bound
+					if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0
+						|| x + p.x >= Engine::width)
+					{
+						adver_pts -= 5;
+					}
+					else if (grid[y + p.y][x + p.x] == e_pawn::cross)
+					{
+						adver_pts += 10;
+					}
+					else if (grid[y + p.y][x + p.x] == e_pawn::none)
+					{
+						adver_pts += 5;
+					}
+					else if (grid[y + p.y][x + p.x] == e_pawn::circle)
+					{
+						adver_pts -= 10;
+					}
+				}
+			}
+		}
+	}
+
+	return own_pts + adver_pts;
+}
 
 /// === END OF FILES	============================================================================

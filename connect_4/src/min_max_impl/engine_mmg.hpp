@@ -36,6 +36,9 @@ public:
 
 private:
 	/// === Private Declarations	================================================================
+
+	int16_t eval_draw() const;
+
 	/// === Private Attributs	====================================================================
 
 	Engine& engine_;

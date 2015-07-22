@@ -50,7 +50,7 @@ bool Engine::add_pawn(const uint8_t _x)
 	}
 
 	/// Set pawn in free cell and column _x
-	grid_[y - 1][_x] = (players_[current_player_] == players_[0]) ? e_pawn::yellow : e_pawn::red;
+	grid_[y - 1][_x] = (players_[current_player_] == players_[0]) ? e_pawn::cross : e_pawn::circle;
 
 	/// Control end of game
 	check_is_finished();
@@ -99,18 +99,20 @@ void Engine::check_is_finished()
 
 			auto count = uint16_t { };
 
-			for (uint16_t xl = x + 1; xl < width; ++xl)
+			for (uint16_t xl = x; xl < width; ++xl)
 			{
 				if (first_cell == grid_[y][xl]) count++;
 				else break;
 			}
 
-			if (count == line - 1)
+			if (count >= line)
 			{
 				x_win = x;
 				y_win = y;
 				goto found;
 			}
+
+			x += count - 1;
 		}
 	}
 
@@ -126,18 +128,20 @@ void Engine::check_is_finished()
 
 			auto count = uint16_t { };
 
-			for (uint16_t yl = y + 1; yl < height; ++yl)
+			for (uint16_t yl = y; yl < height; ++yl)
 			{
 				if (first_cell == grid_[yl][x]) count++;
 				else break;
 			}
 
-			if (count == line - 1)
+			if (count >= line)
 			{
 				x_win = x;
 				y_win = y;
 				goto found;
 			}
+
+			y += count - 1;
 		}
 	}
 
@@ -160,7 +164,7 @@ void Engine::check_is_finished()
 				else break;
 			}
 
-			if (count == line - 1)
+			if (count >= line - 1)
 			{
 				x_win = x;
 				y_win = y;
@@ -188,7 +192,8 @@ void Engine::check_is_finished()
 				else break;
 			}
 
-			if (count == line - 1)
+			/// Count could be greater than line, still a win
+			if (count >= line - 1)
 			{
 				x_win = x;
 				y_win = y;
@@ -209,7 +214,7 @@ void Engine::check_is_finished()
 	/// Label : Line found
 	found:
 	{
-		winner_ = (grid_[y_win][x_win] == e_pawn::yellow) ? 0 : 1;
+		winner_ = (grid_[y_win][x_win] == e_pawn::cross) ? 0 : 1;
 		is_finished_ = true;
 	}
 }
