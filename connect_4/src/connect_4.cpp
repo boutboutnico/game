@@ -40,8 +40,10 @@ int main()
 
 	auto engine = Engine("P1", "AI");
 
-	auto mmg = Min_Max_Generic<uint8_t> { };
-	auto ai_engine = Engine_MMG { engine, "AI" };
+//	auto mmg = Min_Max_Generic<uint8_t> { };
+//	auto ai_engine = Engine_MMG(engine, "AI");
+	Min_Max_Generic<uint8_t> mmg;
+	Engine_MMG ai_engine(engine, "AI");
 
 	auto is_quit = false;
 	auto str_input = string { };
@@ -94,6 +96,8 @@ int main()
 		getline(cin, str_input);
 		if (str_input == "n") is_quit = true;
 	}
+
+	cout << "Bye Bye..." << endl;
 
 	return 0;
 #else

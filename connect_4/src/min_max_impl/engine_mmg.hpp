@@ -9,6 +9,7 @@
 
 /// === Includes	================================================================================
 
+#include <mutex>
 #include "min_max_generic/min_max_engine.hpp"
 #include "engine/engine.hpp"
 
@@ -23,6 +24,15 @@ public:
 	/// === Public Declarations	====================================================================
 
 	Engine_MMG(Engine& _engine, const std::string& _ai_player);
+//	Engine_MMG(const Engine_MMG& _src) = default;
+	virtual ~Engine_MMG()
+	{
+	}
+
+//	virtual Engine_MMG* clone() const
+//	{
+//		return new Engine_MMG(*this);
+//	}
 
 	virtual std::vector<uint8_t> get_moves() const;
 	virtual void execute_move(const uint8_t& _move) const;
@@ -31,6 +41,7 @@ public:
 
 	virtual bool is_game_finished() const
 	{
+		std::lock_guard<std::mutex> lock(mut_);
 		return engine_.is_game_finished();
 	}
 
@@ -40,6 +51,7 @@ private:
 
 	Engine& engine_;
 	std::string ai_player_;
+	mutable std::mutex mut_;
 };
 
 ///	------------------------------------------------------------------------------------------------

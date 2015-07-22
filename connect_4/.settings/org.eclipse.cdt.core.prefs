@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/MINGW_HOME/delimiter=;
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/MINGW_HOME/operation=replace
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/MINGW_HOME/value=C\:\\mingw-w64\\x86_64-5.1.0-posix-seh-rt_v4-rev0\\mingw64
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/PATH/delimiter=;
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/PATH/operation=replace
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/PATH/value=${MINGW_HOME}\\bin;${MSYS_HOME}\\bin;C\:/Program Files/Java/jre1.8.0_45/bin/server;C\:/Program Files/Java/jre1.8.0_45/bin;C\:/Program Files/Java/jre1.8.0_45/lib/amd64;C\:\\Perl64\\site\\bin;C\:\\Perl64\\bin;C\:\\ProgramData\\Oracle\\Java\\javapath;C\:\\WINDOWS\\system32;C\:\\WINDOWS;C\:\\WINDOWS\\System32\\Wbem;C\:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C\:\\Program Files\\Perforce;C\:\\Program Files (x86)\\Skype\\Phone\\;C\:\\Program Files (x86)\\Windows Kits\\8.0\\Windows Performance Toolkit\\;C\:\\Program Files\\Microsoft SQL Server\\110\\Tools\\Binn\\;C\:\\MinGW\\bin;C\:\\1_work\\depot_code\\cpp\\lib\\opencv\\build\\vc\\install\\x86\\vc11\\bin;C\:\\Users\\nboutin\\AppData\\Roaming\\Dashlane\\3.2.6.89007\\bin\\Firefox_Extension\\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\\components;C\:\\Users\\nboutin\\AppData\\Roaming\\Dashlane\\3.2.6.89099\\bin\\Firefox_Extension\\{442718d9-475e-452a-b3e1-fb1ee16b8e9f}\\components;C\:\\eclipse_mars
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/append=true
+environment/project/cdt.managedbuild.config.gnu.mingw.exe.debug.1639258913/appendContributed=true

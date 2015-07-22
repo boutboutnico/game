@@ -28,6 +28,8 @@ Engine_MMG::Engine_MMG(Engine& _engine, const string& _ai_player)
 
 vector<uint8_t> Engine_MMG::get_moves() const
 {
+	std::lock_guard<std::mutex> lock(mut_);
+
 	auto moves = vector<uint8_t> { };
 
 	for (auto x = uint8_t { }; x < Engine::width; ++x)
@@ -45,6 +47,7 @@ vector<uint8_t> Engine_MMG::get_moves() const
 
 void Engine_MMG::execute_move(const uint8_t& _move) const
 {
+	std::lock_guard<std::mutex> lock(mut_);
 	engine_.add_pawn(_move);
 }
 
@@ -52,6 +55,7 @@ void Engine_MMG::execute_move(const uint8_t& _move) const
 
 void Engine_MMG::undo_move(const uint8_t& _move) const
 {
+	std::lock_guard<std::mutex> lock(mut_);
 	engine_.remove_pawn(_move);
 }
 
@@ -59,6 +63,7 @@ void Engine_MMG::undo_move(const uint8_t& _move) const
 
 int16_t Engine_MMG::eval() const
 {
+	std::lock_guard<std::mutex> lock(mut_);
 	auto n_cell = uint16_t { };
 
 	/// Count active pawn
