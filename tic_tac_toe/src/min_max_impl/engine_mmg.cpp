@@ -47,8 +47,6 @@ vector<tic_tac_toe::move_t> Engine_MMG::get_moves() const
 
 void Engine_MMG::execute_move(const move_t& _move) const
 {
-//	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
-
 	engine_.add_pawn(_move.x_, _move.y_);
 }
 
@@ -56,8 +54,6 @@ void Engine_MMG::execute_move(const move_t& _move) const
 
 void Engine_MMG::undo_move(const move_t& _move) const
 {
-//	auto move = dynamic_pointer_cast<move_xy, move_t>(_move);
-
 	engine_.remove_pawn(_move.x_, _move.y_);
 }
 
