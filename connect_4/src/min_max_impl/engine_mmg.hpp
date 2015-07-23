@@ -37,7 +37,7 @@ public:
 private:
 	/// === Private Declarations	================================================================
 
-	int16_t eval_draw() const;
+	int16_t eval_rec(uint8_t _x, uint8_t _y, uint8_t _depth) const;
 
 	/// === Private Attributs	====================================================================
 

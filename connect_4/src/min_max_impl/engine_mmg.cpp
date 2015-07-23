@@ -76,7 +76,15 @@ int16_t Engine_MMG::eval() const
 	}
 	else if (winner == Engine::no_winner_)
 	{
-		result = eval_draw();
+		const auto& grid = engine_.get_grid();
+
+		for (auto y = uint16_t { }; y < grid.size(); ++y)
+		{
+			for (auto x = uint16_t { }; x < grid[y].size(); ++x)
+			{
+				result += eval_rec(x, y, 1);
+			}
+		}
 	}
 	else
 	{
@@ -96,7 +104,7 @@ struct point_t
 	int8_t x, y;
 };
 
-int16_t Engine_MMG::eval_draw() const
+int16_t Engine_MMG::eval_rec(uint8_t x, uint8_t y, uint8_t _depth) const
 {
 	static const array<point_t, 8> points = { point_t { -1, -1 }, point_t { 0, -1 },
 												point_t { 1, -1 }, point_t { 1, 0 },
@@ -106,61 +114,58 @@ int16_t Engine_MMG::eval_draw() const
 	const auto& grid = engine_.get_grid();
 	auto own_pts = int16_t { }, adver_pts = int16_t { };
 
-	for (auto y = uint16_t { }; y < grid.size(); ++y)
+	if(_depth == 0)
 	{
-		for (auto x = uint16_t { }; x < grid[y].size(); ++x)
+
+	}
+
+	if (grid[y][x] == e_pawn::none)
+	{
+//		continue;
+	}
+	else if (grid[y][x] == ai_player_.get_pawn())
+	{
+		for (const auto& p : points)
 		{
-			if (grid[y][x] == e_pawn::none)
+			/// Is in bound
+			if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0 || x + p.x >= Engine::width)
 			{
-				continue;
+				own_pts -= 5;
 			}
-			else if (grid[y][x] == ai_player_.get_pawn())
+			else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
 			{
-				for (const auto& p : points)
-				{
-					/// Is in bound
-					if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0
-						|| x + p.x >= Engine::width)
-					{
-						own_pts -= 5;
-					}
-					else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
-					{
-						own_pts += 10;
-					}
-					else if (grid[y + p.y][x + p.x] == e_pawn::none)
-					{
-						own_pts += 5;
-					}
-					else
-					{
-						own_pts -= 10;
-					}
-				}
+				own_pts += 10;
+			}
+			else if (grid[y + p.y][x + p.x] == e_pawn::none)
+			{
+				own_pts += 5;
 			}
 			else
 			{
-				for (const auto& p : points)
-				{
-					/// Is in bound
-					if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0
-						|| x + p.x >= Engine::width)
-					{
-						adver_pts -= 5;
-					}
-					else if (grid[y + p.y][x + p.x] == e_pawn::none)
-					{
-						adver_pts += 5;
-					}
-					else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
-					{
-						adver_pts -= 10;
-					}
-					else
-					{
-						adver_pts += 10;
-					}
-				}
+				own_pts -= 10;
+			}
+		}
+	}
+	else
+	{
+		for (const auto& p : points)
+		{
+			/// Is in bound
+			if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0 || x + p.x >= Engine::width)
+			{
+				adver_pts -= 5;
+			}
+			else if (grid[y + p.y][x + p.x] == e_pawn::none)
+			{
+				adver_pts += 5;
+			}
+			else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
+			{
+				adver_pts -= 10;
+			}
+			else
+			{
+				adver_pts += 10;
 			}
 		}
 	}
