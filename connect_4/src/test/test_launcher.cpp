@@ -11,6 +11,7 @@
 
 #include "test_is_finished.hpp"
 #include "test_remove.hpp"
+#include "test_minmax_eval.hpp"
 
 /// === Namespaces	================================================================================
 
@@ -30,6 +31,11 @@ void test_launch()
 	is_finished_diag_LB_RT_2();
 
 	remomve_pawn_1();
+
+	draw_eval_1();
+	draw_eval_2();
+	draw_eval_3();
+	draw_eval_4();
 }
 
 /// === Private Definitions	========================================================================

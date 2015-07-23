@@ -76,7 +76,7 @@ int16_t Engine_MMG::eval() const
 	}
 	else if (winner == Engine::no_winner_)
 	{
-		result = draw_eval(2);
+		result = draw_eval(draw_eval_depth_);
 	}
 	else
 	{
@@ -106,7 +106,7 @@ int16_t Engine_MMG::draw_eval(uint8_t _depth) const
 
 			for (const auto& p : points)
 			{
-				result += point_eval(x, y, p, _depth - 1);
+				result += point_eval(x, y, p, p, _depth - 1);
 			}
 		}
 	}
@@ -115,21 +115,24 @@ int16_t Engine_MMG::draw_eval(uint8_t _depth) const
 
 ///	------------------------------------------------------------------------------------------------
 
-int16_t Engine_MMG::point_eval(int8_t _x, int8_t _y, Engine_MMG::point_t _p, uint8_t _depth) const
+int16_t Engine_MMG::point_eval(	const uint8_t _x,
+								const uint8_t _y,
+								const point_t _p_move,
+								point_t _p_next,
+								uint8_t _depth) const
 {
-	if (_depth == 0 || is_in_bound(_x, _y) == false)
+	if (_depth == 0 || is_in_bound(_x + _p_next.x, _y + _p_next.y) == false)
 	{
-		return eval(_x, _y, _p);
+		return eval(_x, _y, _p_next);
 	}
 
 	auto result = int16_t { };
-	result += eval(_x, _y, _p);
+	result += eval(_x, _y, _p_next);
 
-	_p.x += _p.x;
-	_p.y += _p.y;
-//	_p.inc();
+	_p_next.x += _p_move.x;
+	_p_next.y += _p_move.y;
 
-	result += point_eval(_x, _y, _p, _depth - 1);
+	result += point_eval(_x, _y, _p_move, _p_next, _depth - 1);
 	return result;
 }
 
@@ -145,19 +148,19 @@ int16_t Engine_MMG::eval(int8_t x, int8_t y, point_t p) const
 		/// Is in bound
 		if (is_in_bound(x + p.x, y + p.y) == false)
 		{
-			own_pts -= 5;
+			own_pts += wall_coef;
 		}
 		else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
 		{
-			own_pts += 10;
+			own_pts += player_coef;
 		}
 		else if (grid[y + p.y][x + p.x] == e_pawn::none)
 		{
-			own_pts += 5;
+			own_pts += empty_coef;
 		}
 		else
 		{
-			own_pts -= 10;
+			own_pts += adversary_coef;
 		}
 	}
 	else
@@ -165,23 +168,23 @@ int16_t Engine_MMG::eval(int8_t x, int8_t y, point_t p) const
 		/// Is in bound
 		if (is_in_bound(x + p.x, y + p.y) == false)
 		{
-			adver_pts -= 5;
+			adver_pts += wall_coef;
 		}
 		else if (grid[y + p.y][x + p.x] == e_pawn::none)
 		{
-			adver_pts += 5;
+			adver_pts += empty_coef;
 		}
 		else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
 		{
-			adver_pts -= 10;
+			adver_pts += adversary_coef;
 		}
 		else
 		{
-			adver_pts += 10;
+			adver_pts += player_coef;
 		}
 	}
 
-	return own_pts + adver_pts;
+	return own_pts - adver_pts;
 }
 
 /// === END OF FILES	============================================================================

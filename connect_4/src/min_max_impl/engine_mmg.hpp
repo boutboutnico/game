@@ -20,6 +20,13 @@ namespace connect_4
 class Engine_MMG : public ai::min_max::Min_Max_Engine<uint8_t>
 {
 public:
+	/// === Public Constants	====================================================================
+
+	static const int16_t wall_coef = -5;
+	static const int16_t player_coef = 10;
+	static const int16_t empty_coef = 5;
+	static const int16_t adversary_coef = -10;
+
 	/// === Public Declarations	====================================================================
 
 	Engine_MMG(Engine& _engine, Player& _ai_player);
@@ -34,16 +41,16 @@ public:
 		return engine_.is_game_finished();
 	}
 
+	void set_draw_eval_depth(uint8_t _depth)
+	{
+		draw_eval_depth_ = _depth;
+	}
+
 private:
 	///	=== Private Structures	====================================================================
 	struct point_t
 	{
 		int8_t x, y;
-
-//		void inc()
-//		{
-//
-//		}
 	};
 
 	/// === Private Declarations	================================================================
@@ -54,13 +61,25 @@ private:
 	}
 
 	int16_t draw_eval(uint8_t _depth) const;
-	int16_t point_eval(int8_t _x, int8_t _y, point_t _p, uint8_t _depth) const;
+	int16_t point_eval(	uint8_t _x,
+						uint8_t _y,
+						point_t _p_move,
+						point_t _p_next,
+						uint8_t _depth) const;
 	int16_t eval(int8_t _x, int8_t _y, point_t _p) const;
 
 	/// === Private Attributs	====================================================================
 
 	Engine& engine_;
 	Player& ai_player_;
+	uint8_t draw_eval_depth_ = 2;
+
+#ifdef TEST
+	friend int16_t friend_draw_eval(Engine_MMG& _mmg, uint8_t _depth)
+	{
+		return _mmg.draw_eval(_depth);
+	}
+#endif
 };
 
 ///	------------------------------------------------------------------------------------------------
