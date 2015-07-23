@@ -10,6 +10,7 @@ using namespace connect_4;
 
 /// === Includes	================================================================================
 
+#include <limits>
 #include "engine/engine.hpp"
 
 /// === Namespaces	================================================================================
@@ -59,7 +60,6 @@ void Engine_MMG::undo_move(const uint8_t& _move) const
 
 int16_t Engine_MMG::eval() const
 {
-	static const int16_t high_score = Engine::width * Engine::height * 8 * 10;
 	auto n_cell = uint16_t { };
 
 	/// Count active pawn
@@ -72,23 +72,15 @@ int16_t Engine_MMG::eval() const
 
 	if (winner == ai_player_)
 	{
-		result = high_score - n_cell;
+		result = numeric_limits<int16_t>::max() - n_cell;
 	}
 	else if (winner == Engine::no_winner_)
 	{
-		const auto& grid = engine_.get_grid();
-
-		for (auto y = uint16_t { }; y < grid.size(); ++y)
-		{
-			for (auto x = uint16_t { }; x < grid[y].size(); ++x)
-			{
-				result += eval_rec(x, y, 1);
-			}
-		}
+		result = draw_eval(2);
 	}
 	else
 	{
-		result = -high_score + n_cell;
+		result = numeric_limits<int16_t>::min() + n_cell;
 	}
 
 	return result;
@@ -96,15 +88,7 @@ int16_t Engine_MMG::eval() const
 
 /// === Private Definitions	========================================================================
 
-/// Cross = adver
-/// Circle = AI
-
-struct point_t
-{
-	int8_t x, y;
-};
-
-int16_t Engine_MMG::eval_rec(uint8_t x, uint8_t y, uint8_t _depth) const
+int16_t Engine_MMG::draw_eval(uint8_t _depth) const
 {
 	static const array<point_t, 8> points = { point_t { -1, -1 }, point_t { 0, -1 },
 												point_t { 1, -1 }, point_t { 1, 0 },
@@ -112,61 +96,88 @@ int16_t Engine_MMG::eval_rec(uint8_t x, uint8_t y, uint8_t _depth) const
 												point_t { -1, 1 }, point_t { -1, 0 } };
 
 	const auto& grid = engine_.get_grid();
-	auto own_pts = int16_t { }, adver_pts = int16_t { };
+	auto result = int16_t { };
 
-	if(_depth == 0)
+	for (auto y = uint8_t { }; y < grid.size(); ++y)
 	{
-
-	}
-
-	if (grid[y][x] == e_pawn::none)
-	{
-//		continue;
-	}
-	else if (grid[y][x] == ai_player_.get_pawn())
-	{
-		for (const auto& p : points)
+		for (auto x = uint8_t { }; x < grid[y].size(); ++x)
 		{
-			/// Is in bound
-			if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0 || x + p.x >= Engine::width)
+			if (grid[y][x] == e_pawn::none) continue;
+
+			for (const auto& p : points)
 			{
-				own_pts -= 5;
+				result += point_eval(x, y, p, _depth - 1);
 			}
-			else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
-			{
-				own_pts += 10;
-			}
-			else if (grid[y + p.y][x + p.x] == e_pawn::none)
-			{
-				own_pts += 5;
-			}
-			else
-			{
-				own_pts -= 10;
-			}
+		}
+	}
+	return result;
+}
+
+///	------------------------------------------------------------------------------------------------
+
+int16_t Engine_MMG::point_eval(int8_t _x, int8_t _y, Engine_MMG::point_t _p, uint8_t _depth) const
+{
+	if (_depth == 0 || is_in_bound(_x, _y) == false)
+	{
+		return eval(_x, _y, _p);
+	}
+
+	auto result = int16_t { };
+	result += eval(_x, _y, _p);
+
+	_p.x += _p.x;
+	_p.y += _p.y;
+//	_p.inc();
+
+	result += point_eval(_x, _y, _p, _depth - 1);
+	return result;
+}
+
+///	------------------------------------------------------------------------------------------------
+
+int16_t Engine_MMG::eval(int8_t x, int8_t y, point_t p) const
+{
+	auto own_pts = int16_t { }, adver_pts = int16_t { };
+	const auto& grid = engine_.get_grid();
+
+	if (grid[y][x] == ai_player_.get_pawn())
+	{
+		/// Is in bound
+		if (is_in_bound(x + p.x, y + p.y) == false)
+		{
+			own_pts -= 5;
+		}
+		else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
+		{
+			own_pts += 10;
+		}
+		else if (grid[y + p.y][x + p.x] == e_pawn::none)
+		{
+			own_pts += 5;
+		}
+		else
+		{
+			own_pts -= 10;
 		}
 	}
 	else
 	{
-		for (const auto& p : points)
+		/// Is in bound
+		if (is_in_bound(x + p.x, y + p.y) == false)
 		{
-			/// Is in bound
-			if (y + p.y < 0 || y + p.y >= Engine::height || x + p.x < 0 || x + p.x >= Engine::width)
-			{
-				adver_pts -= 5;
-			}
-			else if (grid[y + p.y][x + p.x] == e_pawn::none)
-			{
-				adver_pts += 5;
-			}
-			else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
-			{
-				adver_pts -= 10;
-			}
-			else
-			{
-				adver_pts += 10;
-			}
+			adver_pts -= 5;
+		}
+		else if (grid[y + p.y][x + p.x] == e_pawn::none)
+		{
+			adver_pts += 5;
+		}
+		else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
+		{
+			adver_pts -= 10;
+		}
+		else
+		{
+			adver_pts += 10;
 		}
 	}
 

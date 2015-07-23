@@ -35,9 +35,27 @@ public:
 	}
 
 private:
+	///	=== Private Structures	====================================================================
+	struct point_t
+	{
+		int8_t x, y;
+
+//		void inc()
+//		{
+//
+//		}
+	};
+
 	/// === Private Declarations	================================================================
 
-	int16_t eval_rec(uint8_t _x, uint8_t _y, uint8_t _depth) const;
+	inline bool is_in_bound(int8_t x, int8_t y) const
+	{
+		return (y < 0 || y >= Engine::height || x < 0 || x >= Engine::width) ? false : true;
+	}
+
+	int16_t draw_eval(uint8_t _depth) const;
+	int16_t point_eval(int8_t _x, int8_t _y, point_t _p, uint8_t _depth) const;
+	int16_t eval(int8_t _x, int8_t _y, point_t _p) const;
 
 	/// === Private Attributs	====================================================================
 
