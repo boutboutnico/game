@@ -74,6 +74,8 @@ int main()
 			{
 				move = mmg.compute(ai_engine);
 				cout << "AI: " << int16_t(move.x_) << " " << int16_t(move.y_) << endl;
+				move = mmg.minimax(ai_engine);
+				cout << "AI: " << int16_t(move.x_) << " " << int16_t(move.y_) << endl;
 			}
 
 			engine_result = engine.add_pawn(move.x_, move.y_);
