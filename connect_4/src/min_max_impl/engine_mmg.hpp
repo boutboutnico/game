@@ -22,7 +22,7 @@ class Engine_MMG : public ai::min_max::Min_Max_Engine<uint8_t>
 public:
 	/// === Public Declarations	====================================================================
 
-	Engine_MMG(Engine& _engine, const std::string& _ai_player);
+	Engine_MMG(Engine& _engine, Player& _ai_player);
 
 	virtual std::vector<uint8_t> get_moves() const;
 	virtual void execute_move(const uint8_t& _move) const;
@@ -42,7 +42,7 @@ private:
 	/// === Private Attributs	====================================================================
 
 	Engine& engine_;
-	std::string ai_player_;
+	Player& ai_player_;
 };
 
 ///	------------------------------------------------------------------------------------------------

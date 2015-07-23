@@ -27,7 +27,9 @@ namespace test
 
 void remomve_pawn_1()
 {
-	auto engine = Engine { "P1", "P2" };
+	auto player_1 = Player {"P1", e_pawn::cross};
+	auto player_2 = Player {"P2", e_pawn::circle};
+	auto engine = Engine { player_1, player_2 };
 
 	engine.add_pawn(3);
 

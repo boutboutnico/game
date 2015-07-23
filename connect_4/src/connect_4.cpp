@@ -28,6 +28,10 @@ using namespace connect_4;
 using namespace print;
 using namespace ai::min_max;
 
+///	=== Public Declarations	========================================================================
+
+uint16_t ask_ai_level();
+
 /// === Public Definitions	========================================================================
 
 /// TODO
@@ -38,61 +42,120 @@ using namespace ai::min_max;
 int main()
 {
 #ifndef TEST
-	cout << "Connect 4" << endl;
+	cout << "=====\tConnect4\t=====" << endl << endl;
 
+	auto str_input = string { };
 	auto is_quit = false;
 
 	while (is_quit == false)
 	{
-		auto mmg = Min_Max_Generic<uint8_t> { };
-		auto str_input = string { };
-		auto x = uint16_t { };
-		auto engine_result = false;
+		///	=========================
 
-		cout << "Set AI level: ";
+		cout << "Choose an option:" << endl;
+		cout << "1- Human vs Human" << endl;
+		cout << "2- Human vs AI" << endl;
+		cout << "3- AI vs Human" << endl;
+		cout << "4- AI vs AI" << endl;
 		getline(cin, str_input);
-		auto level = int16_t { 0 };
-		stringstream(str_input) >> level;
-		mmg.set_depth(level);
+		auto option = int16_t { 0 };
+		stringstream(str_input) >> option;
+		cout << endl;
 
-		auto engine = Engine { "P1", "AI" };
-		auto ai_engine = Engine_MMG { engine, "AI" };
+		///	=========================
+
+		auto player_1 = unique_ptr<Player> { };
+		auto player_2 = unique_ptr<Player> { };
+
+		auto mmg = Min_Max_Generic<uint8_t> { };
+		auto ai_level_1 = uint16_t { };
+		auto ai_level_2 = uint16_t { };
+
+		switch (option)
+		{
+		case 1:
+		{
+			auto p1 = unique_ptr<Player>(new Player { "P1", e_pawn::cross });
+			auto p2 = unique_ptr<Player>(new Player { "P2", e_pawn::circle });
+			player_1 = move(p1);
+			player_2 = move(p2);
+			break;
+		}
+		case 2:
+		{
+			auto p1 = unique_ptr<Player>(new Player { "P1", e_pawn::cross });
+			auto p2 = unique_ptr<Player>(new Player { "AI2", e_pawn::circle });
+			player_1 = move(p1);
+			player_2 = move(p2);
+			ai_level_2 = ask_ai_level();
+			break;
+		}
+		case 3:
+		{
+			auto p1 = unique_ptr<Player>(new Player { "AI1", e_pawn::cross });
+			auto p2 = unique_ptr<Player>(new Player { "P2", e_pawn::circle });
+			player_1 = move(p1);
+			player_2 = move(p2);
+			ai_level_1 = ask_ai_level();
+			break;
+		}
+		case 4:
+		{
+			auto p1 = unique_ptr<Player>(new Player { "AI1", e_pawn::cross });
+			auto p2 = unique_ptr<Player>(new Player { "AI2", e_pawn::circle });
+			player_1 = move(p1);
+			player_2 = move(p2);
+			ai_level_1 = ask_ai_level();
+			ai_level_2 = ask_ai_level();
+			break;
+		}
+		default:
+			return 0;
+		}
+
 		auto n_turn = uint16_t { };
+		auto engine = Engine { *player_1, *player_2 };
 
-		auto player_sequence = vector<uint8_t> { };
-		auto ai_sequence = vector<uint8_t> { };
+		auto ai_engine_1 = Engine_MMG { engine, *player_1 };
+		auto ai_engine_2 = Engine_MMG { engine, *player_2 };
 
 		while (engine.is_game_finished() == false)
 		{
 			print_grid(engine);
 
-			auto current_player = engine.get_current_player();
+			auto engine_result = false;
+			auto x = uint16_t { };
+			auto& current_player = engine.get_current_player();
 			cout << "=====\t" << current_player << " T:" << ++n_turn << "\t=====" << endl;
 
 			do
 			{
-				if (current_player == "P1" || current_player == "P2")
+				auto t1 = std::chrono::high_resolution_clock::now();
+
+				if (current_player.get_name() == "AI1")
+				{
+					mmg.set_depth(ai_level_1);
+					x = mmg.compute(ai_engine_1);
+				}
+				else if (current_player.get_name() == "AI2")
+				{
+					mmg.set_depth(ai_level_2);
+					x = mmg.compute(ai_engine_2);
+				}
+				else
 				{
 					cout << "Select column: ";
 					getline(cin, str_input);
 					stringstream(str_input) >> x;
 					--x;
-
-					if (current_player == "P1") player_sequence.push_back(x + 1);
-				}
-				else
-				{
-					auto t1 = std::chrono::high_resolution_clock::now();
-					x = mmg.compute(ai_engine);
-					auto t2 = std::chrono::high_resolution_clock::now();
-					auto duration =
-							std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-
-					ai_sequence.push_back(x + 1);
-
-					cout << "AI: " << x + 1 << " (" << duration << " ms)" << endl;
 				}
 
+				auto t2 = std::chrono::high_resolution_clock::now();
+				auto duration =
+						std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+
+				cout << "Move: " << x + 1 << " (" << duration << " ms)" << endl;
+
+				current_player.add_move(x + 1);
 				engine_result = engine.add_pawn(x);
 			}
 			while (engine_result == false);
@@ -101,7 +164,8 @@ int main()
 		print_grid(engine);
 
 		/// Display end of game
-		cout << "Winner is " << engine.get_winner() << " (AI level: " << level << ")" << endl;
+		cout << "Winner is " << engine.get_winner() << " (AI level: " << ai_level_1 << "&"
+				<< ai_level_2 << ")" << endl;
 
 		cout << "===== End of Game =====" << endl << endl;
 
@@ -109,13 +173,13 @@ int main()
 
 		cout << "n turn: " << n_turn << endl;
 
-		cout << "player:\t";
-		for (auto i : player_sequence)
+		cout << player_1->get_name() << ":\t";
+		for (auto i : player_1->get_history())
 			cout << " " << uint16_t(i);
 		cout << endl;
 
-		cout << "ai    :\t";
-		for (auto i : ai_sequence)
+		cout << player_2->get_name() << ":\t";
+		for (auto i : player_2->get_history())
 			cout << " " << uint16_t(i);
 		cout << endl;
 
@@ -134,4 +198,18 @@ int main()
 	return 0;
 #endif
 }
+
+///	------------------------------------------------------------------------------------------------
+
+uint16_t ask_ai_level()
+{
+	cout << "Set AI level: ";
+	auto str_input = string { };
+	getline(cin, str_input);
+	auto level = uint16_t { 0 };
+	stringstream(str_input) >> level;
+
+	return level;
+}
+
 ///	=== END OF FILE	================================================================================

@@ -19,7 +19,7 @@ using namespace ai;
 
 /// === Public Definitions	========================================================================
 
-Engine_MMG::Engine_MMG(Engine& _engine, const string& _ai_player)
+Engine_MMG::Engine_MMG(Engine& _engine, Player& _ai_player)
 		: engine_(_engine), ai_player_(_ai_player)
 {
 }
@@ -74,7 +74,7 @@ int16_t Engine_MMG::eval() const
 	{
 		result = high_score - n_cell;
 	}
-	else if (winner == "draw")
+	else if (winner == Engine::no_winner_)
 	{
 		result = eval_draw();
 	}
@@ -110,7 +110,11 @@ int16_t Engine_MMG::eval_draw() const
 	{
 		for (auto x = uint16_t { }; x < grid[y].size(); ++x)
 		{
-			if (grid[y][x] == e_pawn::circle)
+			if (grid[y][x] == e_pawn::none)
+			{
+				continue;
+			}
+			else if (grid[y][x] == ai_player_.get_pawn())
 			{
 				for (const auto& p : points)
 				{
@@ -120,7 +124,7 @@ int16_t Engine_MMG::eval_draw() const
 					{
 						own_pts -= 5;
 					}
-					else if (grid[y + p.y][x + p.x] == e_pawn::circle)
+					else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
 					{
 						own_pts += 10;
 					}
@@ -128,13 +132,13 @@ int16_t Engine_MMG::eval_draw() const
 					{
 						own_pts += 5;
 					}
-					else if (grid[y + p.y][x + p.x] == e_pawn::cross)
+					else
 					{
 						own_pts -= 10;
 					}
 				}
 			}
-			else if (grid[y][x] == e_pawn::cross)
+			else
 			{
 				for (const auto& p : points)
 				{
@@ -144,17 +148,17 @@ int16_t Engine_MMG::eval_draw() const
 					{
 						adver_pts -= 5;
 					}
-					else if (grid[y + p.y][x + p.x] == e_pawn::cross)
-					{
-						adver_pts += 10;
-					}
 					else if (grid[y + p.y][x + p.x] == e_pawn::none)
 					{
 						adver_pts += 5;
 					}
-					else if (grid[y + p.y][x + p.x] == e_pawn::circle)
+					else if (grid[y + p.y][x + p.x] == ai_player_.get_pawn())
 					{
 						adver_pts -= 10;
+					}
+					else
+					{
+						adver_pts += 10;
 					}
 				}
 			}
