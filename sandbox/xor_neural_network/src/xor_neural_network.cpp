@@ -7,22 +7,19 @@
 //============================================================================
 
 #include <iostream>
-#include "neural_network/neuron.hpp"
+#include "neural_network/feedforward_neural_network.hpp"
 
 using namespace std;
 using namespace neural_network;
 
 int main()
 {
-	cout << "=====\t XOR Neural Network\t=====" << endl;    // prints !!!Hello World!!!
+	cout << "=====\t XOR Neural Network\t=====" << endl;
 
-	auto w = vector<float> { 0.0001 };
-	auto n = Neuron { w, -1000 };
-
-	auto x = vector<float> { 0.0001 };
-	auto result = n.fire(x);
-
-	cout << result << endl;
+	auto nn = FeedForward_Neural_Network { };
+	nn.add_layer(2);
+	nn.add_layer(4);
+	nn.add_layer(1);
 
 	return 0;
 }

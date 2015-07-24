@@ -25,6 +25,7 @@ public:
 
 	///	--- Operations	----------------------------------------------------------------------------
 
+	/// _inputs value [0, 1]
 	inline float fire(const std::vector<float>& _inputs) const
 	{
 		return sigmoid_function(_inputs);
