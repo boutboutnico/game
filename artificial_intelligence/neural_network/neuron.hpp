@@ -26,15 +26,12 @@ public:
 	///	--- Operations	----------------------------------------------------------------------------
 
 	/// _inputs value [0, 1]
-	inline float fire(const std::vector<float>& _inputs) const
-	{
-		return sigmoid_function(_inputs);
-	}
+	float fire(const std::vector<float>& _inputs) const;
 
 private:
 	/// === Private Declarations	================================================================
 
-	float sigmoid_function(const std::vector<float>& _inputs) const;
+	float sigmoid_function(float _z) const;
 
 	/// === Private Attributs	====================================================================
 

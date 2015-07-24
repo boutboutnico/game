@@ -25,15 +25,19 @@ Neuron::Neuron(const std::vector<float>& _weights, float _bias)
 
 }
 
+///	------------------------------------------------------------------------------------------------
+
+float Neuron::fire(const std::vector<float>& _inputs) const
+{
+	auto result = inner_product(weights_.begin(), weights_.end(), _inputs.begin(), 0);
+	return sigmoid_function(result + bias_);
+}
+
 /// === Private Definitions	========================================================================
 
-float Neuron::sigmoid_function(const vector<float>& _inputs) const
+float Neuron::sigmoid_function(float _z) const
 {
-	auto result = float { };
-
-	result = inner_product(weights_.begin(), weights_.end(), _inputs.begin(), 0);
-
-	return (1 / (1 + exp(-(result + bias_))));
+	return (1 / (1 + exp(-_z)));
 }
 
 /// === END OF FILES	============================================================================
